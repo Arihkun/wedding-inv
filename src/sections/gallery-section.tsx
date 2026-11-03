@@ -9,10 +9,12 @@ import { LightboxDialog } from "@/components/lightbox-dialog";
 export function GallerySection() {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
   const triggerRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const originatingTriggerRef = useRef<HTMLButtonElement | null>(null);
 
   const photos = weddingConfig.gallery;
 
   const handleOpenPhoto = (index: number) => {
+    originatingTriggerRef.current = triggerRefs.current[index] ?? null;
     setSelectedPhotoIndex(index);
   };
 
@@ -36,8 +38,7 @@ export function GallerySection() {
     }
   };
 
-  const getOriginatingElement = () =>
-    selectedPhotoIndex !== null ? triggerRefs.current[selectedPhotoIndex] ?? null : null;
+  const getOriginatingElement = () => originatingTriggerRef.current;
 
   return (
     <section

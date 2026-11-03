@@ -62,7 +62,7 @@ export function StorySection() {
                     </p>
                   ) : (
                     <p className="text-xs text-secondary/70 italic">
-                      Babak berharga dalam kenangan indah perjalanan cinta kami.
+                      Cerita pada bagian ini akan ditambahkan oleh Kinar dan Oki.
                     </p>
                   )}
 
