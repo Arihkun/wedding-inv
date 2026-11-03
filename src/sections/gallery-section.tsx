@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ZoomIn } from "lucide-react";
 import { weddingConfig } from "@/config/wedding.config";
 import { LightboxDialog } from "@/components/lightbox-dialog";
+import { Reveal } from "@/components/reveal";
 
 export function GallerySection() {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
@@ -46,7 +47,7 @@ export function GallerySection() {
       aria-label="Galeri Foto"
       className="py-20 px-6 bg-ivory text-forest border-t border-border-subtle"
     >
-      <div className="max-w-4xl mx-auto text-center space-y-4 mb-12">
+      <Reveal y={16} className="max-w-4xl mx-auto text-center space-y-4 mb-12">
         <p className="text-xs uppercase tracking-[0.25em] text-secondary font-medium">
           MOMEN INDAH
         </p>
@@ -56,42 +57,47 @@ export function GallerySection() {
         <p className="text-base text-secondary max-w-md mx-auto leading-relaxed">
           Potret kebahagiaan dan kehangatan kebersamaan kami dalam menyambut hari bahagia pernikahan.
         </p>
-      </div>
+      </Reveal>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto auto-rows-auto">
         {photos.map((photo, index) => (
-          <button
+          <Reveal
             key={index}
-            ref={(el) => {
-              triggerRefs.current[index] = el;
-            }}
-            type="button"
-            onClick={() => handleOpenPhoto(index)}
-            className={`group relative w-full rounded-2xl overflow-hidden border border-border-strong bg-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest transition-transform hover:-translate-y-1 shadow-xs ${getLayoutClasses(
-              index
-            )}`}
-            aria-label={`Buka pratinjau: ${photo.alt}`}
+            delay={index * 0.08}
+            scale={0.96}
+            y={20}
+            className={`w-full ${getLayoutClasses(index)}`}
           >
-            <Image
-              src={photo.src}
-              alt={photo.alt}
-              width={photo.width}
-              height={photo.height}
-              loading="lazy"
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            {/* Hover icon indicator */}
-            <div className="absolute inset-0 bg-forest-dark/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-ivory">
-              <div className="p-3 rounded-full bg-forest-dark/80 border border-gold/40 text-gold shadow-md">
-                <ZoomIn className="w-5 h-5" aria-hidden="true" />
+            <button
+              ref={(el) => {
+                triggerRefs.current[index] = el;
+              }}
+              type="button"
+              onClick={() => handleOpenPhoto(index)}
+              className="group relative w-full h-full rounded-2xl overflow-hidden border border-border-strong bg-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest transition-transform hover:-translate-y-1 shadow-xs"
+              aria-label={`Buka pratinjau: ${photo.alt}`}
+            >
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                width={photo.width}
+                height={photo.height}
+                loading="lazy"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              {/* Hover icon indicator */}
+              <div className="absolute inset-0 bg-forest-dark/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-ivory">
+                <div className="p-3 rounded-full bg-forest-dark/80 border border-gold/40 text-gold shadow-md">
+                  <ZoomIn className="w-5 h-5" aria-hidden="true" />
+                </div>
               </div>
-            </div>
-            {photo.placeholder && (
-              <span className="absolute bottom-2 left-2 right-2 bg-surface/90 text-secondary text-[11px] py-1 px-2 rounded-md text-center truncate font-medium">
-                Botanical Placeholder
-              </span>
-            )}
-          </button>
+              {photo.placeholder && (
+                <span className="absolute bottom-2 left-2 right-2 bg-surface/90 text-secondary text-[11px] py-1 px-2 rounded-md text-center truncate font-medium">
+                  Botanical Placeholder
+                </span>
+              )}
+            </button>
+          </Reveal>
         ))}
       </div>
 

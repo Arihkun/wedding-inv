@@ -3,6 +3,7 @@
 import { useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { MailOpen, RefreshCw } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { weddingConfig } from "@/config/wedding.config";
 import { useInvitation } from "@/components/invitation-provider";
 import { formatEventDate } from "@/lib/wedding";
@@ -85,10 +86,6 @@ export function OpeningGate({ onOpen }: OpeningGateProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isGateOpen, handleOpen]);
 
-  if (isGateOpen) {
-    return null;
-  }
-
   const formattedDate = formatEventDate(
     weddingConfig.weddingDate,
     weddingConfig.timezone,
@@ -103,16 +100,31 @@ export function OpeningGate({ onOpen }: OpeningGateProps) {
         `}</style>
       </noscript>
 
-      <div
-        id="opening-gate"
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Undangan Pernikahan Kinar dan Oki"
-        className="fixed inset-0 z-50 flex items-center justify-center bg-forest text-ivory overflow-y-auto px-4 py-8"
-      >
-        {/* Decorative inner frame */}
-        <div className="relative max-w-md w-full my-auto mx-auto bg-forest-dark border border-gold/30 rounded-2xl p-6 sm:p-10 text-center shadow-2xl">
+      <AnimatePresence>
+        {!isGateOpen && (
+          <motion.div
+            id="opening-gate"
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Undangan Pernikahan Kinar dan Oki"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{
+              opacity: 0,
+              y: -40,
+              transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+            }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-forest text-ivory overflow-y-auto px-4 py-8"
+          >
+            {/* Decorative inner frame */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94, y: 24 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: -24 }}
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+              className="relative max-w-md w-full my-auto mx-auto bg-forest-dark border border-gold/30 rounded-2xl p-6 sm:p-10 text-center shadow-2xl"
+            >
           <p className="text-xs uppercase tracking-[0.25em] text-gold font-medium mb-3">
             UNDANGAN PERNIKAHAN
           </p>
@@ -183,21 +195,25 @@ export function OpeningGate({ onOpen }: OpeningGateProps) {
           </div>
 
           {/* Buka Undangan Action Button (min 44px tap target) */}
-          <button
+          <motion.button
             ref={buttonRef}
             type="button"
             onClick={handleOpen}
-            className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 min-h-[48px] rounded-xl bg-gold text-forest font-semibold text-base tracking-wide shadow-md hover:bg-gold-muted active:scale-[0.98] transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 min-h-[48px] rounded-xl bg-gold text-forest font-semibold text-base tracking-wide shadow-md hover:bg-gold-muted transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-white cursor-pointer"
           >
             <MailOpen className="w-5 h-5" aria-hidden="true" />
             <span>Buka Undangan</span>
-          </button>
+          </motion.button>
 
           <p className="text-[11px] text-ivory/50 mt-3">
             Tekan tombol di atas atau tombol Escape pada keyboard untuk membuka
           </p>
-        </div>
-      </div>
-    </>
+        </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</>
   );
 }

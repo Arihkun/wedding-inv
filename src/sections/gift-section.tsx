@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Gift, Copy, Check, AlertCircle } from "lucide-react";
 import { weddingConfig } from "@/config/wedding.config";
+import { Reveal } from "@/components/reveal";
 
 export function GiftSection() {
   const gifts = weddingConfig.gifts;
@@ -33,7 +34,7 @@ export function GiftSection() {
       className="py-20 px-6 bg-surface text-forest border-t border-border-subtle"
     >
       <div className="max-w-xl mx-auto text-center space-y-8">
-        <div className="space-y-3">
+        <Reveal y={16} className="space-y-3">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-forest text-gold mb-2">
             <Gift className="w-5 h-5" aria-hidden="true" />
           </div>
@@ -46,22 +47,24 @@ export function GiftSection() {
           <p className="text-sm text-secondary leading-relaxed">
             Kehadiran serta doa restu Bapak/Ibu/Saudara/i sekalian merupakan anugerah dan kado terindah bagi kami.
           </p>
-        </div>
+        </Reveal>
 
         {gifts.length === 0 ? (
-          <div className="p-8 rounded-2xl bg-ivory border border-border-strong text-center space-y-3 shadow-xs">
+          <Reveal delay={0.15} y={20} className="p-8 rounded-2xl bg-ivory border border-border-strong text-center space-y-3 shadow-xs">
             <p className="text-base font-serif font-medium text-forest">
               Informasi Rekening Belum Tersedia
             </p>
             <p className="text-sm text-secondary leading-relaxed max-w-md mx-auto">
               Informasi detail mengenai tanda kasih atau nomor rekening akan diumumkan kemudian. Doa restu Anda merupakan kehormatan terbesar bagi kami.
             </p>
-          </div>
+          </Reveal>
         ) : (
           <div className="space-y-4">
             {gifts.map((item, index) => (
-              <div
+              <Reveal
                 key={index}
+                delay={index * 0.1}
+                y={20}
                 className="p-6 rounded-2xl bg-ivory border border-border-strong text-left space-y-3 shadow-sm"
               >
                 <div className="flex justify-between items-center">
@@ -111,7 +114,7 @@ export function GiftSection() {
                     Gagal menyalin secara otomatis. Silakan salin nomor secara manual.
                   </p>
                 )}
-              </div>
+              </Reveal>
             ))}
           </div>
         )}

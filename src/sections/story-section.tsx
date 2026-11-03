@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { weddingConfig } from "@/config/wedding.config";
+import { Reveal } from "@/components/reveal";
 
 export function StorySection() {
   const stories = weddingConfig.story;
@@ -10,7 +11,7 @@ export function StorySection() {
       aria-label="Kisah Cinta"
       className="py-20 px-6 bg-ivory text-forest border-t border-border-subtle"
     >
-      <div className="max-w-2xl mx-auto text-center space-y-4 mb-14">
+      <Reveal y={16} className="max-w-2xl mx-auto text-center space-y-4 mb-14">
         <p className="text-xs uppercase tracking-[0.25em] text-secondary font-medium">
           PERJALANAN KAMI
         </p>
@@ -20,7 +21,7 @@ export function StorySection() {
         <p className="text-base text-secondary max-w-md mx-auto leading-relaxed">
           Setiap langkah dan babak perjalanan yang membawa kami pada titik indah ini.
         </p>
-      </div>
+      </Reveal>
 
       <div className="relative max-w-xl mx-auto">
         {/* Vertical timeline line */}
@@ -31,8 +32,10 @@ export function StorySection() {
             const isEven = index % 2 === 0;
 
             return (
-              <div
+              <Reveal
                 key={item.id}
+                delay={index * 0.12}
+                y={20}
                 className={`relative flex flex-col sm:flex-row items-start ${
                   isEven ? "sm:flex-row-reverse" : ""
                 } gap-6 sm:gap-10`}
@@ -79,7 +82,7 @@ export function StorySection() {
                     </div>
                   )}
                 </div>
-              </div>
+              </Reveal>
             );
           })}
         </div>

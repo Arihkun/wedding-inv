@@ -1,10 +1,16 @@
 import Image from "next/image";
+import { motion } from "motion/react";
 import { weddingConfig } from "@/config/wedding.config";
 import type { Profile } from "@/types/wedding";
+import { Reveal } from "@/components/reveal";
 
 function ProfileCard({ profile, role }: { profile: Profile; role: string }) {
   return (
-    <div className="flex flex-col items-center text-center p-6 sm:p-8 rounded-2xl bg-ivory border border-border-strong shadow-sm max-w-sm w-full">
+    <motion.div
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+      className="flex flex-col items-center text-center p-6 sm:p-8 rounded-2xl bg-ivory border border-border-strong shadow-sm hover:shadow-md transition-shadow max-w-sm w-full"
+    >
       {/* Portrait Photo */}
       <div className="relative aspect-[3/4] w-48 sm:w-56 rounded-xl overflow-hidden border border-border-strong mb-6 shadow-inner">
         <Image
@@ -52,7 +58,7 @@ function ProfileCard({ profile, role }: { profile: Profile; role: string }) {
           <span>@{profile.instagram.replace(/^@/, "")}</span>
         </a>
       )}
-    </div>
+    </motion.div>
   );
 }
 
@@ -66,7 +72,7 @@ export function CoupleSection() {
       className="py-20 px-6 bg-surface text-forest"
     >
       <div className="max-w-4xl mx-auto text-center space-y-12">
-        <div className="space-y-3">
+        <Reveal y={16} className="space-y-3">
           <p className="text-xs uppercase tracking-[0.25em] text-secondary font-medium">
             MEMPELAI
           </p>
@@ -76,18 +82,22 @@ export function CoupleSection() {
           <p className="text-base text-secondary max-w-lg mx-auto leading-relaxed">
             Dengan penuh rasa syukur, kami mengundang Anda untuk menyaksikan perayaan pernikahan kami berdua.
           </p>
-        </div>
+        </Reveal>
 
         <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-center justify-center gap-8 xl:gap-12">
-          <ProfileCard profile={bride} role="Mempelai Wanita" />
+          <Reveal delay={0.1} y={24} className="w-full flex justify-center">
+            <ProfileCard profile={bride} role="Mempelai Wanita" />
+          </Reveal>
 
-          <div className="flex items-center justify-center">
+          <Reveal delay={0.2} scale={0.8} y={0} className="flex items-center justify-center">
             <span className="editorial-title text-4xl text-gold font-light italic px-4">
               &amp;
             </span>
-          </div>
+          </Reveal>
 
-          <ProfileCard profile={groom} role="Mempelai Pria" />
+          <Reveal delay={0.3} y={24} className="w-full flex justify-center">
+            <ProfileCard profile={groom} role="Mempelai Pria" />
+          </Reveal>
         </div>
       </div>
     </section>

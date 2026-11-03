@@ -6,6 +6,7 @@ import { useInvitation } from "@/components/invitation-provider";
 import { getWishes, sendWish } from "@/lib/api";
 import { TurnstileWidget, type TurnstileHandle } from "@/components/turnstile";
 import type { Wish, WishInput, InvitationData } from "@/types/api";
+import { Reveal } from "@/components/reveal";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
@@ -281,7 +282,7 @@ export function WishesSection() {
       className="py-20 px-6 bg-surface text-forest border-t border-border-subtle"
     >
       <div className="max-w-2xl mx-auto space-y-12">
-        <div className="text-center space-y-3">
+        <Reveal y={16} className="text-center space-y-3">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-forest text-gold mb-2">
             <MessageSquare className="w-5 h-5" aria-hidden="true" />
           </div>
@@ -294,36 +295,38 @@ export function WishesSection() {
           <p className="text-base text-secondary max-w-md mx-auto leading-relaxed">
             Tinggalkan doa restu dan pesan hangat untuk mengiringi awal perjalanan baru kami berdua.
           </p>
-        </div>
+        </Reveal>
 
         {/* Wishes Form: requires BOTH token AND validated invitation */}
-        {!token || !invitation ? (
-          <div className="p-8 rounded-2xl bg-ivory border border-border-strong text-left space-y-2">
-            <div className="flex items-start gap-3">
-              <ShieldAlert className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
-              <div>
-                <p className="font-serif text-lg font-medium text-forest">
-                  Mode Hanya-Lihat (View-Only)
-                </p>
-                <p className="text-sm text-secondary leading-relaxed mt-1">
-                  Formulir pengiriman doa restu hanya aktif melalui tautan undangan resmi yang telah tervalidasi. Anda tetap dapat membaca doa dan ucapan dari para sahabat dan keluarga di bawah ini.
-                </p>
+        <Reveal delay={0.15} y={20}>
+          {!token || !invitation ? (
+            <div className="p-8 rounded-2xl bg-ivory border border-border-strong text-left space-y-2">
+              <div className="flex items-start gap-3">
+                <ShieldAlert className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-serif text-lg font-medium text-forest">
+                    Mode Hanya-Lihat (View-Only)
+                  </p>
+                  <p className="text-sm text-secondary leading-relaxed mt-1">
+                    Formulir pengiriman doa restu hanya aktif melalui tautan undangan resmi yang telah tervalidasi. Anda tetap dapat membaca doa dan ucapan dari para sahabat dan keluarga di bawah ini.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <WishesForm
-            key={token}
-            token={token}
-            invitation={invitation}
-            onWishCreated={(newWish) => {
-              setWishes((prev) => mergeWishes(prev, [newWish]));
-            }}
-          />
-        )}
+          ) : (
+            <WishesForm
+              key={token}
+              token={token}
+              invitation={invitation}
+              onWishCreated={(newWish) => {
+                setWishes((prev) => mergeWishes(prev, [newWish]));
+              }}
+            />
+          )}
+        </Reveal>
 
         {/* Public Wishes Feed */}
-        <div className="space-y-6">
+        <Reveal delay={0.25} y={20} className="space-y-6">
           <div className="flex items-center justify-between border-b border-border-strong pb-3">
             <h3 className="font-serif text-xl font-medium text-forest">
               Buku Tamu Digital ({wishes.length})
@@ -413,7 +416,7 @@ export function WishesSection() {
               </button>
             </div>
           )}
-        </div>
+        </Reveal>
       </div>
     </section>
   );
