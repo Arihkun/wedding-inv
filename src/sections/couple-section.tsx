@@ -1,17 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "motion/react";
 import { weddingConfig } from "@/config/wedding.config";
 import type { Profile } from "@/types/wedding";
 import { Reveal } from "@/components/reveal";
 import { CornerFlourish, BotanicalDivider } from "@/components/botanical-ornaments";
+import { CardSpotlight } from "@/components/card-spotlight";
 
 function ProfileCard({ profile, role }: { profile: Profile; role: string }) {
   return (
-    <motion.div
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.35, ease: "easeOut" }}
+    <CardSpotlight
+      spotlightColor="rgba(197, 160, 89, 0.22)"
       className="relative flex flex-col items-center text-center p-6 sm:p-8 rounded-3xl bg-ivory border-2 border-gold/30 shadow-lg hover:shadow-xl transition-all max-w-sm w-full overflow-hidden"
     >
       {/* Corner Flourishes */}
@@ -69,7 +68,7 @@ function ProfileCard({ profile, role }: { profile: Profile; role: string }) {
           <span>@{profile.instagram.replace(/^@/, "")}</span>
         </a>
       )}
-    </motion.div>
+    </CardSpotlight>
   );
 }
 

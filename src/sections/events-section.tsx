@@ -1,12 +1,12 @@
 "use client";
 
 import { Calendar, Clock, MapPin, Navigation, CalendarPlus } from "lucide-react";
-import { motion } from "motion/react";
 import { weddingConfig } from "@/config/wedding.config";
 import { formatEventDate, formatEventTime, getMapLinks } from "@/lib/wedding";
 import type { WeddingEvent } from "@/types/wedding";
 import { Reveal } from "@/components/reveal";
 import { CornerFlourish, BotanicalDivider } from "@/components/botanical-ornaments";
+import { CardSpotlight } from "@/components/card-spotlight";
 
 function EventCard({ event }: { event: WeddingEvent }) {
   const formattedDate = formatEventDate(
@@ -32,9 +32,8 @@ function EventCard({ event }: { event: WeddingEvent }) {
   const calLink = getCalendarLink();
 
   return (
-    <motion.div
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.35, ease: "easeOut" }}
+    <CardSpotlight
+      spotlightColor="rgba(197, 160, 89, 0.22)"
       className="relative flex flex-col justify-between p-6 sm:p-8 rounded-3xl bg-ivory border-2 border-gold/30 shadow-lg hover:shadow-xl transition-all max-w-md w-full text-left overflow-hidden"
     >
       {/* Corner Flourishes */}
@@ -128,7 +127,7 @@ function EventCard({ event }: { event: WeddingEvent }) {
           </a>
         )}
       </div>
-    </motion.div>
+    </CardSpotlight>
   );
 }
 
