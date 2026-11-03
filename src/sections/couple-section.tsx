@@ -73,12 +73,12 @@ export function CoupleSection() {
           <h2 className="editorial-title text-3xl sm:text-4xl text-forest font-normal">
             Dua Insan, Satu Janji
           </h2>
-          <p className="text-sm text-secondary max-w-lg mx-auto">
-            Dengan penuh rasa syukur, kami mengundang Anda untuk menyaksikan ikrar janji suci kami berdua.
+          <p className="text-base text-secondary max-w-lg mx-auto leading-relaxed">
+            Dengan penuh rasa syukur, kami mengundang Anda untuk menyaksikan perayaan pernikahan kami berdua.
           </p>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
+        <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-center justify-center gap-8 xl:gap-12">
           <ProfileCard profile={bride} role="Mempelai Wanita" />
 
           <div className="flex items-center justify-center">
