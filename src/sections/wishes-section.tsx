@@ -7,6 +7,7 @@ import { getWishes, sendWish } from "@/lib/api";
 import { TurnstileWidget, type TurnstileHandle } from "@/components/turnstile";
 import type { Wish, WishInput, InvitationData } from "@/types/api";
 import { Reveal } from "@/components/reveal";
+import { BotanicalDivider } from "@/components/botanical-ornaments";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
@@ -283,7 +284,7 @@ export function WishesSection() {
     >
       <div className="max-w-2xl mx-auto space-y-12">
         <Reveal y={16} className="text-center space-y-3">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-forest text-gold mb-2">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-forest text-gold mb-2 shadow-md">
             <MessageSquare className="w-5 h-5" aria-hidden="true" />
           </div>
           <p className="text-xs uppercase tracking-[0.25em] text-secondary font-medium">
@@ -295,12 +296,13 @@ export function WishesSection() {
           <p className="text-base text-secondary max-w-md mx-auto leading-relaxed">
             Tinggalkan doa restu dan pesan hangat untuk mengiringi awal perjalanan baru kami berdua.
           </p>
+          <BotanicalDivider className="my-4" />
         </Reveal>
 
         {/* Wishes Form: requires BOTH token AND validated invitation */}
         <Reveal delay={0.15} y={20}>
           {!token || !invitation ? (
-            <div className="p-8 rounded-2xl bg-ivory border border-border-strong text-left space-y-2">
+            <div className="p-8 rounded-3xl bg-ivory border-2 border-gold/30 text-left space-y-2 shadow-md">
               <div className="flex items-start gap-3">
                 <ShieldAlert className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
                 <div>

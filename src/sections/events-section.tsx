@@ -1,9 +1,12 @@
-import { Calendar, Clock, MapPin, Navigation } from "lucide-react";
+"use client";
+
+import { Calendar, Clock, MapPin, Navigation, CalendarPlus } from "lucide-react";
 import { motion } from "motion/react";
 import { weddingConfig } from "@/config/wedding.config";
 import { formatEventDate, formatEventTime, getMapLinks } from "@/lib/wedding";
 import type { WeddingEvent } from "@/types/wedding";
 import { Reveal } from "@/components/reveal";
+import { CornerFlourish, BotanicalDivider } from "@/components/botanical-ornaments";
 
 function EventCard({ event }: { event: WeddingEvent }) {
   const formattedDate = formatEventDate(
@@ -18,38 +21,60 @@ function EventCard({ event }: { event: WeddingEvent }) {
   );
   const mapLinks = getMapLinks(event);
 
+  const getCalendarLink = () => {
+    if (!event.startsAt) return null;
+    const title = encodeURIComponent(`${event.title} - Kinar & Oki`);
+    const details = encodeURIComponent(`Menghadiri ${event.title} Kinar & Oki`);
+    const location = encodeURIComponent(event.venue || event.address || "");
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}`;
+  };
+
+  const calLink = getCalendarLink();
+
   return (
     <motion.div
       whileHover={{ y: -6 }}
       transition={{ duration: 0.35, ease: "easeOut" }}
-      className="flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-ivory border border-border-strong shadow-sm hover:shadow-md transition-shadow max-w-md w-full text-left"
+      className="relative flex flex-col justify-between p-6 sm:p-8 rounded-3xl bg-ivory border-2 border-gold/30 shadow-lg hover:shadow-xl transition-all max-w-md w-full text-left overflow-hidden"
     >
+      {/* Corner Flourishes */}
+      <CornerFlourish position="top-left" className="top-1.5 left-1.5 opacity-60" />
+      <CornerFlourish position="top-right" className="top-1.5 right-1.5 opacity-60" />
+      <CornerFlourish position="bottom-left" className="bottom-1.5 left-1.5 opacity-60" />
+      <CornerFlourish position="bottom-right" className="bottom-1.5 right-1.5 opacity-60" />
+
       <div className="space-y-4">
-        <div className="inline-block px-3 py-1 rounded-full bg-surface border border-border-strong text-xs font-semibold uppercase tracking-wider text-secondary">
+        <div className="inline-block px-4 py-1.5 rounded-full bg-forest text-gold text-xs font-semibold uppercase tracking-widest shadow-xs">
           {event.title}
         </div>
 
-        <h3 className="editorial-title text-3xl font-medium text-forest">
+        <h3 className="editorial-title text-3xl sm:text-4xl font-normal text-forest">
           {event.title}
         </h3>
 
         {/* Date & Time */}
-        <div className="space-y-2 pt-3 border-t border-border-subtle text-base">
+        <div className="space-y-2.5 pt-3 border-t border-gold/20 text-base">
           <div className="flex items-center gap-3 text-forest">
-            <Calendar className="w-5 h-5 text-forest shrink-0" aria-hidden="true" />
-            <span>{formattedDate}</span>
+            <div className="w-8 h-8 rounded-full bg-surface border border-gold/30 flex items-center justify-center text-forest shrink-0">
+              <Calendar className="w-4 h-4 text-forest" aria-hidden="true" />
+            </div>
+            <span className="font-medium">{formattedDate}</span>
           </div>
 
           <div className="flex items-center gap-3 text-forest">
-            <Clock className="w-5 h-5 text-forest shrink-0" aria-hidden="true" />
-            <span>{formattedTime}</span>
+            <div className="w-8 h-8 rounded-full bg-surface border border-gold/30 flex items-center justify-center text-forest shrink-0">
+              <Clock className="w-4 h-4 text-forest" aria-hidden="true" />
+            </div>
+            <span className="font-medium">{formattedTime}</span>
           </div>
         </div>
 
         {/* Venue & Address */}
-        <div className="pt-3 border-t border-border-subtle space-y-1">
+        <div className="pt-3 border-t border-gold/20 space-y-1">
           <div className="flex items-start gap-3 text-base">
-            <MapPin className="w-5 h-5 text-forest shrink-0 mt-0.5" aria-hidden="true" />
+            <div className="w-8 h-8 rounded-full bg-surface border border-gold/30 flex items-center justify-center text-forest shrink-0 mt-0.5">
+              <MapPin className="w-4 h-4 text-forest" aria-hidden="true" />
+            </div>
             <div>
               <p className="font-semibold text-forest">
                 {event.venue ?? "Lokasi akan diumumkan"}
@@ -62,24 +87,24 @@ function EventCard({ event }: { event: WeddingEvent }) {
         </div>
       </div>
 
-      {/* Map Action Button (min-h-[44px]) */}
-      <div className="mt-8 pt-4 border-t border-border-subtle">
+      {/* Action Buttons */}
+      <div className="mt-8 pt-4 border-t border-gold/20 space-y-3">
         {mapLinks ? (
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row gap-2.5">
             <a
               href={mapLinks.location}
               target="_blank"
               rel="noopener noreferrer"
-              className="min-h-[44px] inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-forest text-ivory text-sm font-medium hover:bg-forest-light transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest"
+              className="min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-forest text-ivory text-sm font-medium hover:bg-forest-light transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest shadow-xs flex-1"
             >
               <MapPin className="w-4 h-4 text-gold" aria-hidden="true" />
-              <span>Buka Google Maps</span>
+              <span>Buka Peta</span>
             </a>
             <a
               href={mapLinks.directions}
               target="_blank"
               rel="noopener noreferrer"
-              className="min-h-[44px] inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-border-strong text-forest text-sm font-medium hover:bg-surface transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest"
+              className="min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-gold/40 text-forest text-sm font-medium hover:bg-surface transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest flex-1"
             >
               <Navigation className="w-4 h-4 text-secondary" aria-hidden="true" />
               <span>Petunjuk Arah</span>
@@ -89,6 +114,18 @@ function EventCard({ event }: { event: WeddingEvent }) {
           <div className="p-3.5 rounded-xl bg-surface border border-border-strong text-xs text-secondary leading-relaxed">
             Peta penunjuk lokasi Google Maps akan tersedia setelah koordinat resmi terverifikasi.
           </div>
+        )}
+
+        {calLink && (
+          <a
+            href={calLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl border border-gold/40 text-xs font-medium text-forest hover:bg-surface transition-colors"
+          >
+            <CalendarPlus className="w-3.5 h-3.5 text-gold" aria-hidden="true" />
+            <span>Simpan ke Google Calendar</span>
+          </a>
         )}
       </div>
     </motion.div>
@@ -102,9 +139,9 @@ export function EventsSection() {
     <section
       id="events"
       aria-label="Waktu dan Lokasi Acara"
-      className="py-20 px-6 bg-surface text-forest border-t border-border-subtle"
+      className="py-20 px-6 bg-surface text-forest border-t border-border-subtle relative overflow-hidden"
     >
-      <div className="max-w-4xl mx-auto text-center space-y-12">
+      <div className="max-w-4xl mx-auto text-center space-y-10">
         <Reveal y={16} className="space-y-3">
           <p className="text-xs uppercase tracking-[0.25em] text-secondary font-medium">
             AGENDA PERAYAAN
@@ -115,6 +152,7 @@ export function EventsSection() {
           <p className="text-base text-secondary max-w-md mx-auto leading-relaxed">
             Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Anda berkenan hadir dan memberikan doa restu.
           </p>
+          <BotanicalDivider className="my-4" />
         </Reveal>
 
         <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-stretch justify-center gap-8">

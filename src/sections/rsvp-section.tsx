@@ -7,6 +7,7 @@ import { saveRsvp } from "@/lib/api";
 import { TurnstileWidget, type TurnstileHandle } from "@/components/turnstile";
 import type { Attendance, RsvpInput, InvitationData } from "@/types/api";
 import { Reveal } from "@/components/reveal";
+import { BotanicalDivider } from "@/components/botanical-ornaments";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
@@ -262,11 +263,12 @@ export function RsvpSection() {
           <p className="text-base text-secondary max-w-md mx-auto leading-relaxed">
             Mohon konfirmasikan kehadiran Anda agar kami dapat mempersiapkan jamuan terbaik bagi Anda.
           </p>
+          <BotanicalDivider className="my-4" />
         </Reveal>
 
         <Reveal delay={0.15} y={20}>
           {!token || !invitation ? (
-            <div className="p-8 rounded-2xl bg-surface border border-border-strong text-left space-y-3">
+            <div className="p-8 rounded-3xl bg-surface border-2 border-gold/30 text-left space-y-3 shadow-md">
               <div className="flex items-start gap-3">
                 <ShieldAlert className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
                 <div>

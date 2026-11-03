@@ -10,6 +10,8 @@ import { InvitationProvider, useInvitation } from "@/components/invitation-provi
 import { OpeningGate } from "@/components/opening-gate";
 import { AudioPlayer, type AudioPlayerHandle } from "@/components/audio-player";
 import { Reveal } from "@/components/reveal";
+import { FloatingNav } from "@/components/floating-nav";
+import { FloatingPetals, MonogramCrest } from "@/components/botanical-ornaments";
 
 // Sections
 import { HeroSection } from "@/sections/hero-section";
@@ -53,6 +55,9 @@ function WeddingPageContent() {
 
   return (
     <SmoothScroll>
+      {/* Ambient Floating Gold & Leaf Petals */}
+      <FloatingPetals />
+
       {/* Opening Gate Modal with Focus Containment */}
       <OpeningGate onOpen={handleOpenGate} />
 
@@ -65,6 +70,14 @@ function WeddingPageContent() {
         <AudioPlayer ref={audioPlayerRef} />
       </div>
 
+      {/* Floating Glassmorphic Bottom Navigation Bar */}
+      <div
+        inert={shouldContainInert ? true : undefined}
+        aria-hidden={shouldContainInert ? true : undefined}
+      >
+        <FloatingNav />
+      </div>
+
       {/* Main Single Document Layout */}
       <main
         id="main-content"
@@ -74,12 +87,16 @@ function WeddingPageContent() {
         className="focus:outline-none"
       >
         <div className="flex flex-col lg:flex-row min-h-screen">
-          {/* Desktop Left Column: Sticky Editorial Portrait */}
+          {/* Desktop Left Column: Sticky Editorial Arched Portrait */}
           <aside
             aria-label="Profil Utama Mempelai"
             className="hidden lg:flex lg:w-5/12 lg:h-screen lg:sticky lg:top-0 flex-col justify-between items-center text-center p-10 bg-forest text-ivory border-r border-gold/30 z-20 overflow-hidden"
           >
-            <Reveal delay={0.1} y={16} className="relative z-10 space-y-2 mt-4">
+            {/* Ambient gold glow */}
+            <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full bg-gold/10 blur-3xl pointer-events-none" />
+
+            <Reveal delay={0.1} y={16} className="relative z-10 space-y-1.5 mt-2">
+              <MonogramCrest className="mb-1" />
               <p className="text-xs uppercase tracking-[0.3em] text-gold font-medium">
                 UNDANGAN PERNIKAHAN
               </p>
@@ -89,24 +106,26 @@ function WeddingPageContent() {
             </Reveal>
 
             <Reveal delay={0.25} y={20} scale={0.97} className="relative z-10 my-auto w-full max-w-xs">
-              <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden border-2 border-gold/40 shadow-2xl">
-                <Image
-                  src={weddingConfig.hero.src}
-                  alt={weddingConfig.hero.alt}
-                  width={weddingConfig.hero.width}
-                  height={weddingConfig.hero.height}
-                  priority
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-forest-dark/40 via-transparent to-transparent pointer-events-none" />
+              <div className="relative aspect-[3/4] w-full arch-frame overflow-hidden border-2 border-gold/45 shadow-[0_20px_50px_rgba(0,0,0,0.6)] p-1 bg-gradient-to-b from-gold/30 via-transparent to-gold/30">
+                <div className="w-full h-full arch-frame overflow-hidden relative">
+                  <Image
+                    src={weddingConfig.hero.src}
+                    alt={weddingConfig.hero.alt}
+                    width={weddingConfig.hero.width}
+                    height={weddingConfig.hero.height}
+                    priority
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-forest-dark/50 via-transparent to-transparent pointer-events-none" />
+                </div>
               </div>
             </Reveal>
 
-            <Reveal delay={0.4} y={16} className="relative z-10 space-y-2 mb-4">
-              <div className="inline-block px-4 py-1.5 rounded-full border border-gold/40 bg-forest-dark/70 text-gold-muted text-xs tracking-wider uppercase font-medium">
+            <Reveal delay={0.4} y={16} className="relative z-10 space-y-2 mb-2">
+              <div className="inline-block px-5 py-1.5 rounded-full border border-gold/40 bg-forest-dark/80 text-gold-muted text-xs tracking-wider uppercase font-medium shadow-md">
                 {formattedDate}
               </div>
-              <p className="text-xs text-ivory/70 font-sans tracking-wide">
+              <p className="text-xs text-ivory/80 font-sans tracking-wide italic">
                 Menuju Hari Bahagia Kinar &amp; Oki
               </p>
             </Reveal>
@@ -117,7 +136,7 @@ function WeddingPageContent() {
             initial={false}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
-            className="w-full lg:w-7/12 flex flex-col"
+            className="w-full lg:w-7/12 flex flex-col pb-20 sm:pb-24"
           >
             {/* Mobile Hero (rendered on viewports below lg) */}
             <div className="block lg:hidden">
