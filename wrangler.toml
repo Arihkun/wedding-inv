@@ -1,0 +1,12 @@
+name = "kinar-oki"
+pages_build_output_dir = "out"
+compatibility_date = "2026-11-03"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "wedding"
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "migrations"
+
+[vars]
+APP_ORIGIN = "http://localhost:8788"

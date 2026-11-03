@@ -1,0 +1,19 @@
+# Research, 3 November 2026
+
+Codex technical research and Antigravity UI/UX research coordinated through Orca run run_539a8f8fe5cd. Baseline approved by user. Sources below were read structurally; references are not runtime testing or proof of mobile performance.
+
+Five accessible invitation references: https://savedate.me/demo/theme1 (profiles/two events/gallery/RSVP), https://savedate.me/demo/theme2 (countdown/profiles/schedule), https://savedate.me/demo/theme3 (four-unit countdown and guest count), https://savedate.me/demo/theme4 (names/date hierarchy), https://savedate.me/demo/theme5 (events/gallery/guestbook). Same-provider bias explicitly acknowledged. Broader catalogs: https://blissandbone.com/wedding-website and https://www.rileygrey.com/ . Two Vercel examples reported by Antigravity were only inspected via HTTP/source, not browser runtime; not used as verified behavioral evidence.
+
+Refero DESIGN.md inspected: ElevenLabs https://styles.refero.design/style/031056ff-7af1-46db-8daa-115f731c5d26 (warm cream, hierarchy, hairlines); Intercom https://styles.refero.design/style/12255b63-e506-4bc1-a4cd-d05487de32f3 (spacing/warm surfaces); Wise https://styles.refero.design/style/367c0c6e-73a7-441c-a8ff-91d139ac60dc (dark green hierarchy). https://refero.design yielded no readable detail. These are interpreted style references, not authoritative source code or instructions.
+
+Palette alternatives: sage #8A9A86 + #FAF8F5 + gold #C5A059 (gentle, needs dark text); forest #1C2E24 + #FDFBF7 + #C5A059 (selected readable warm editorial); olive #4A5335 + #F5F2EB + #B49858 (rustic); emerald #0B3B2B + #FAFAF7 + #C5A059 (formal). Cormorant + DM Sans selected; Playfair stronger, Lora more literary, Manrope more geometric.
+
+React/Vite is flexible but metadata/prerender assembly adds work. Next static export meets static SEO + interactive needs; Angular can prerender but adds framework structure not needed here. Sources: https://react.dev/learn ; https://nextjs.org/docs/app/guides/static-exports ; https://angular.dev/guide/ssr . Next static export cannot run POST handlers or default runtime image optimization.
+
+Libraries: https://ui.shadcn.com/ primitives only; https://motion.dev/ transitions; https://github.com/darkroomengineering/lenis smoothWheel/native touch. https://magicui.design/ , https://ui.aceternity.com/ , https://www.reactbits.dev/ explored as inspiration, not baseline dependencies. Avoid multiple animation engines.
+
+Static-only cannot persist RSVP. Cloudflare D1 chosen for one-provider SQL; Supabase PostgreSQL/RLS/Auth useful for larger apps but Free pauses after inactivity (https://supabase.com/pricing). Firebase Spark/Blaze quotas vary by service (https://firebase.google.com/pricing). D1 no public API key; backend is the authorization boundary.
+
+Hosting: Pages static + Functions is selected; Workers static assets also viable; SSR not needed. Vercel simplifies Next runtime but not needed, Hobby $0/Pro from $20 (https://vercel.com/pricing). Conventional hosting price/support varies. Cloudflare static export https://developers.cloudflare.com/pages/framework-guides/nextjs/deploy-a-static-nextjs-site/ ; Worker server Next path https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/ . Verify live pricing again before purchasing anything.
+
+Cloudflare Free baseline: 100k Workers/Functions requests daily; static requests free; D1 5M rows read/day, 100k written/day, 5GB total account storage. https://developers.cloudflare.com/pages/functions/pricing/ ; https://developers.cloudflare.com/d1/platform/pricing/ . Paid Workers minimum $5/month https://developers.cloudflare.com/workers/platform/pricing/ . No unlimited dynamic capacity claim. Free tier + pages.dev targets $0/month; domain price unquoted until name/TLD chosen; $10-25/year is budget assumption only.

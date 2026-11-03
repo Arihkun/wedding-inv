@@ -1,0 +1,39 @@
+{
+  "name": "kinar-oki-invitation",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "check": "npm run lint && npm run typecheck && npm test && npm run build",
+    "preview": "wrangler pages dev out",
+    "db:migrate:local": "wrangler d1 migrations apply wedding --local",
+    "guests": "node scripts/guests.mjs",
+    "production:check": "node scripts/check-production.mjs"
+  },
+  "dependencies": {
+    "next": "16.4.4",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "motion": "14.9.0",
+    "lenis": "1.3.27",
+    "@radix-ui/react-dialog": "^1.1.15",
+    "lucide-react": "^0.577.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/node": "^22.19.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "tailwindcss": "4.3.4",
+    "@tailwindcss/postcss": "4.3.4",
+    "eslint": "^9.39.0",
+    "eslint-config-next": "16.4.4",
+    "vitest": "^3.2.4",
+    "wrangler": "^4.45.0",
+    "@cloudflare/workers-types": "^4.20261103.0"
+  }
+}
