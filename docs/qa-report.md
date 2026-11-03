@@ -42,8 +42,8 @@ Production content checker currently rejects missing data by design. GitHub remo
 ## Frontend Visual & Accessibility Polish Review (Commit 9fa62c7 + follow-up)
 
 - **Color Contrast & Typography Polish**:
-  - Story Section: Date label adjusted to `text-forest text-xs font-semibold uppercase` (13.86:1 contrast ratio against Ivory `#FDFCFA`). Story placeholder body adjusted to `text-secondary text-sm italic leading-relaxed` (5.48:1 contrast, comfortably passing WCAG AA 4.5:1).
-  - Closing Section: Sub-footer credit text updated from low-contrast `text-ivory/60` to `text-sm text-ivory/85` (>10:1 contrast against deep forest background `#1B3B2B`).
+  - Story Section: Date label adjusted to `text-forest text-xs font-semibold uppercase`; placeholder body adjusted to `text-secondary text-sm italic leading-relaxed`, removing low-contrast gold and alpha text. Actual card background is Surface `#F4F0E8`; the general forest/ivory ratio must not be cited as its measured card ratio.
+  - Closing Section: Sub-footer credit text updated from `text-ivory/60` to larger `text-sm text-ivory/85` against actual Forest `#1C2E24`. This improves readability; no unsupported exact ratio is claimed here.
 - **Neutral Tone & Factual Wedding Text**:
   - Verified and eliminated residual non-factual phrases ("janji suci" and "perjalanan suci") across `couple-section.tsx` and `wishes-section.tsx`. Wording is strictly respectful, factual, and neutral ("perayaan pernikahan kami berdua", "perjalanan baru kami berdua").
 - **1024px Narrow Desktop Layout Hardening**:
@@ -51,3 +51,5 @@ Production content checker currently rejects missing data by design. GitHub remo
   - Adjusted cards in `couple-section.tsx` and `events-section.tsx` to `flex-col sm:flex-row lg:flex-col xl:flex-row` so cards stack cleanly inside the 597px container at 1024px-1279px and only expand horizontally at >=1280px, avoiding column overflow and card squishing.
 - **Verification Status**:
   - `npm run check` fully passes: ESLint clean, TypeScript strict typecheck clean, 20/20 Vitest unit/integration tests passing, Open Graph generation verified, and Next.js Turbopack static export completed.
+
+Antigravity reported the final visual/build validation; Codex reviewed and merged the changes, then reran lint/typecheck successfully without opening the browser, following the user's resource-saving preference. Port 8788 was confirmed stopped. Real-media, physical-device and production checks above remain outstanding.
