@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  --color-forest: #1C2E24;
+  --color-forest-dark: #132019;
+  --color-forest-light: #2A4335;
+  --color-ivory: #FDFBF7;
+  --color-surface: #F4F0E8;
+  --color-surface-hover: #ECE6DA;
+  --color-secondary: #5A6B60;
+  --color-secondary-dark: #46544B;
+  --color-gold: #C5A059;
+  --color-gold-muted: #D8BD82;
+  --color-border-subtle: #E3DDD2;
+  --color-border-strong: #C4BCAC;
+
+  --font-serif: var(--font-cormorant), Georgia, Cambria, serif;
+  --font-sans: var(--font-dm-sans), system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: auto;
+    background-color: var(--color-ivory);
+    color: var(--color-forest);
+    font-family: var(--font-sans);
+  }
+
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: #C5A059;
+    color: #1C2E24;
+  }
+
+  /* Accessible focus rings */
+  :focus-visible {
+    outline: 2px solid #C5A059;
+    outline-offset: 2px;
+  }
+}
+
+/* Custom editorial ornaments & botanical styling */
+.editorial-title {
+  font-family: var(--font-serif);
+  letter-spacing: -0.015em;
+}
+
+.botanical-pattern {
+  background-color: var(--color-ivory);
+  background-image: radial-gradient(#1c2e24 0.6px, transparent 0.6px);
+  background-size: 24px 24px;
+  opacity: 0.85;
+}
+
+/* Smooth scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F4F0E8;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C4BCAC;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5A6B60;
+}
