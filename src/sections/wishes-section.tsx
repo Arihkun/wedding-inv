@@ -9,6 +9,23 @@ import type { Wish, WishInput, InvitationData } from "@/types/api";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
+function generateUuidV4(): string | null {
+  if (typeof crypto !== "undefined") {
+    if (typeof crypto.randomUUID === "function") {
+      return crypto.randomUUID();
+    }
+    if (typeof crypto.getRandomValues === "function") {
+      const bytes = new Uint8Array(16);
+      crypto.getRandomValues(bytes);
+      bytes[6] = (bytes[6] & 0x0f) | 0x40; // RFC 4122 version 4
+      bytes[8] = (bytes[8] & 0x3f) | 0x80; // RFC 4122 variant 1
+      const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+      return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+    }
+  }
+  return null;
+}
+
 function WishesForm({
   token,
   invitation,
@@ -20,11 +37,7 @@ function WishesForm({
 }) {
   const [name, setName] = useState<string>(() => invitation.name || "");
   const [message, setMessage] = useState<string>("");
-  const [submissionId, setSubmissionId] = useState<string>(() =>
-    typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
-      ? crypto.randomUUID()
-      : "sub-" + Math.random().toString(36).slice(2)
-  );
+  const [submissionId, setSubmissionId] = useState<string | null>(() => generateUuidV4());
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const turnstileRef = useRef<TurnstileHandle | null>(null);
 
@@ -36,6 +49,11 @@ function WishesForm({
     e.preventDefault();
     setFormError(null);
     setFormSuccess(null);
+
+    if (!submissionId) {
+      setFormError("Peramban Anda tidak mendukung pengacakan kriptografi standar untuk pengiriman formulir ini.");
+      return;
+    }
 
     if (!SITE_KEY) {
       setFormError("Layanan verifikasi keamanan sedang tidak tersedia. Pengiriman formulir dinonaktifkan.");
@@ -63,7 +81,7 @@ function WishesForm({
     const payload: WishInput = {
       name: trimmedName,
       message: trimmedMessage,
-      submissionId, // Stable UUID preserved across retry
+      submissionId, // Stable UUID v4 preserved across retry
     };
 
     setIsSubmitting(true);
@@ -73,11 +91,7 @@ function WishesForm({
       onWishCreated(newWish);
       setFormSuccess("Terima kasih atas doa dan ucapan hangat Anda!");
       setMessage("");
-      setSubmissionId(
-        typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
-          ? crypto.randomUUID()
-          : "sub-" + Math.random().toString(36).slice(2)
-      );
+      setSubmissionId(generateUuidV4());
       setTurnstileToken(null);
       turnstileRef.current?.reset();
     } catch (err: unknown) {

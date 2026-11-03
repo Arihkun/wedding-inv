@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
-import { MailOpen, RefreshCw, Sparkles } from "lucide-react";
+import { MailOpen, RefreshCw } from "lucide-react";
 import { weddingConfig } from "@/config/wedding.config";
 import { useInvitation } from "@/components/invitation-provider";
 import { formatEventDate } from "@/lib/wedding";
@@ -113,13 +113,6 @@ export function OpeningGate({ onOpen }: OpeningGateProps) {
       >
         {/* Decorative inner frame */}
         <div className="relative max-w-md w-full my-auto mx-auto bg-forest-dark border border-gold/30 rounded-2xl p-6 sm:p-10 text-center shadow-2xl">
-          {/* Top emblem */}
-          <div className="flex justify-center mb-4">
-            <div className="w-12 h-12 rounded-full border border-gold/40 flex items-center justify-center text-gold bg-forest">
-              <Sparkles className="w-5 h-5" aria-hidden="true" />
-            </div>
-          </div>
-
           <p className="text-xs uppercase tracking-[0.25em] text-gold font-medium mb-3">
             UNDANGAN PERNIKAHAN
           </p>

@@ -17,7 +17,7 @@ interface InvitationContextValue {
 
 const InvitationContext = createContext<InvitationContextValue | undefined>(undefined);
 
-function getInitialToken(): string | null {
+function readTokenFromUrl(): string | null {
   if (typeof window === "undefined") return null;
   try {
     return new URLSearchParams(window.location.search).get("invite");
@@ -27,53 +27,64 @@ function getInitialToken(): string | null {
 }
 
 export function InvitationProvider({ children }: { children: React.ReactNode }) {
-  const [token, setToken] = useState<string | null>(getInitialToken);
+  // Initialize identically on server and client to prevent hydration mismatch
+  const [token, setToken] = useState<string | null>(null);
   const [invitation, setInvitation] = useState<InvitationData | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(() => Boolean(getInitialToken()));
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isGateOpen, setIsGateOpen] = useState(false);
   const activeRequestIdRef = useRef<number>(0);
 
-  // Listen for client navigation popstate
-  useEffect(() => {
-    function handlePopState() {
-      const currentToken = getInitialToken();
-      setToken(currentToken);
-    }
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+  const fetchToken = useCallback((t: string | null) => {
+    const currentRequestId = ++activeRequestIdRef.current;
+    setToken(t);
 
-  // Fetch invitation with async completion and race condition guard
-  useEffect(() => {
-    if (!token) {
+    if (!t) {
+      setInvitation(null);
+      setError(null);
+      setIsLoading(false);
       return;
     }
 
-    let isMounted = true;
-    const currentRequestId = ++activeRequestIdRef.current;
+    setIsLoading(true);
+    setError(null);
+    setInvitation(null);
 
-    resolveInvitation(token)
+    resolveInvitation(t)
       .then((data) => {
-        if (isMounted && currentRequestId === activeRequestIdRef.current) {
+        if (currentRequestId === activeRequestIdRef.current) {
           setInvitation(data);
           setError(null);
           setIsLoading(false);
         }
       })
       .catch((err: unknown) => {
-        if (isMounted && currentRequestId === activeRequestIdRef.current) {
+        if (currentRequestId === activeRequestIdRef.current) {
           const message = err instanceof Error ? err.message : "Gagal memuat data undangan";
           setError(message);
           setInvitation(null);
           setIsLoading(false);
         }
       });
+  }, []);
 
-    return () => {
-      isMounted = false;
+  // Read URL query after client mount and listen for popstate
+  useEffect(() => {
+    const initialToken = readTokenFromUrl();
+    if (initialToken) {
+      // Defer to microtask to ensure asynchronous execution outside synchronous effect pass
+      Promise.resolve().then(() => {
+        fetchToken(initialToken);
+      });
+    }
+
+    const handlePopState = () => {
+      fetchToken(readTokenFromUrl());
     };
-  }, [token]);
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [fetchToken]);
 
   const retryResolve = useCallback(() => {
     if (!token) return;

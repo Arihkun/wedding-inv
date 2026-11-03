@@ -49,10 +49,13 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
     function initLenis() {
       if (isReducedMotion) {
-        if (lenisRef.current) {
-          lenisRef.current.destroy();
+        const instance = lenisRef.current;
+        if (instance) {
+          instance.destroy();
+          if (lenisInstance === instance) {
+            lenisInstance = null;
+          }
           lenisRef.current = null;
-          lenisInstance = null;
         }
         applyScrollLockState();
         return;
@@ -98,12 +101,13 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       if (rafId !== null) {
         cancelAnimationFrame(rafId);
       }
-      if (lenisRef.current) {
-        lenisRef.current.destroy();
-        lenisRef.current = null;
-        if (lenisInstance === lenisRef.current) {
+      const instance = lenisRef.current;
+      if (instance) {
+        instance.destroy();
+        if (lenisInstance === instance) {
           lenisInstance = null;
         }
+        lenisRef.current = null;
       }
     };
   }, []);

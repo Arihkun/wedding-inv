@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { weddingConfig } from "@/config/wedding.config";
@@ -22,9 +22,18 @@ import { RsvpSection } from "@/sections/rsvp-section";
 import { WishesSection } from "@/sections/wishes-section";
 import { ClosingSection } from "@/sections/closing-section";
 
+const emptySubscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
+function useIsMounted() {
+  return useSyncExternalStore(emptySubscribe, getClientSnapshot, getServerSnapshot);
+}
+
 function WeddingPageContent() {
   const { isGateOpen } = useInvitation();
   const audioPlayerRef = useRef<AudioPlayerHandle | null>(null);
+  const isMounted = useIsMounted();
 
   const handleOpenGate = () => {
     // Attempt audio playback upon user interaction
@@ -37,16 +46,20 @@ function WeddingPageContent() {
     weddingConfig.locale
   );
 
+  // In SSR markup, main must not be inert so static/no-JS visitors can read it immediately.
+  // Inert is only applied on the client once mounted while gate is active.
+  const shouldContainInert = isMounted && !isGateOpen;
+
   return (
     <SmoothScroll>
       {/* Opening Gate Modal with Focus Containment */}
       <OpeningGate onOpen={handleOpenGate} />
 
-      {/* Floating Audio Controller - Hidden and inert until gate is opened */}
+      {/* Floating Audio Controller */}
       <div
-        inert={!isGateOpen ? true : undefined}
-        aria-hidden={!isGateOpen}
-        className={!isGateOpen ? "opacity-0 pointer-events-none" : "opacity-100 transition-opacity duration-300"}
+        inert={shouldContainInert ? true : undefined}
+        aria-hidden={shouldContainInert ? true : undefined}
+        className={shouldContainInert ? "opacity-0 pointer-events-none" : "opacity-100 transition-opacity duration-300"}
       >
         <AudioPlayer ref={audioPlayerRef} />
       </div>
@@ -55,8 +68,8 @@ function WeddingPageContent() {
       <main
         id="main-content"
         tabIndex={-1}
-        inert={!isGateOpen ? true : undefined}
-        aria-hidden={!isGateOpen}
+        inert={shouldContainInert ? true : undefined}
+        aria-hidden={shouldContainInert ? true : undefined}
         className="focus:outline-none"
       >
         <div className="flex flex-col lg:flex-row min-h-screen">

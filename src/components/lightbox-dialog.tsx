@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect, useCallback } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
@@ -10,6 +10,7 @@ import { acquireScrollLock, releaseScrollLock } from "@/components/smooth-scroll
 interface LightboxDialogProps {
   photos: Photo[];
   currentIndex: number | null;
+  getOriginatingElement: () => HTMLElement | null;
   onClose: () => void;
   onSelectIndex: (index: number) => void;
 }
@@ -17,12 +18,12 @@ interface LightboxDialogProps {
 export function LightboxDialog({
   photos,
   currentIndex,
+  getOriginatingElement,
   onClose,
   onSelectIndex,
 }: LightboxDialogProps) {
   const isOpen = currentIndex !== null;
   const currentPhoto = currentIndex !== null ? photos[currentIndex] : null;
-  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   const handlePrev = useCallback(() => {
     if (currentIndex === null) return;
@@ -38,14 +39,9 @@ export function LightboxDialog({
 
   useEffect(() => {
     if (isOpen) {
-      previousFocusRef.current = document.activeElement as HTMLElement | null;
       acquireScrollLock("lightbox");
     } else {
       releaseScrollLock("lightbox");
-      if (previousFocusRef.current) {
-        previousFocusRef.current.focus();
-        previousFocusRef.current = null;
-      }
     }
 
     return () => {
@@ -77,6 +73,13 @@ export function LightboxDialog({
         <Dialog.Content
           className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 focus:outline-none"
           aria-describedby="lightbox-description"
+          onCloseAutoFocus={(e) => {
+            e.preventDefault();
+            const el = getOriginatingElement();
+            if (el) {
+              el.focus();
+            }
+          }}
         >
           <Dialog.Title className="sr-only">Pratinjau Foto Galeri</Dialog.Title>
           <Dialog.Description id="lightbox-description" className="sr-only">
