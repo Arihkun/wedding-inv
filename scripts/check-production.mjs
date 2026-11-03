@@ -1,9 +1,7 @@
-import ts from "typescript";
-import { readFile, access } from "node:fs/promises";
+import { access } from "node:fs/promises";
 import { resolve } from "node:path";
-const source = await readFile("src/config/wedding.config.ts", "utf8");
-const output = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
-const { weddingConfig: c } = await import(`data:text/javascript;base64,${Buffer.from(output).toString("base64")}`);
+import { loadWeddingConfig } from "./load-config.mjs";
+const c = await loadWeddingConfig();
 const issues = [];
 const requireValue = (value, label) => { if (!value) issues.push(`${label} belum tersedia.`); };
 requireValue(process.env.NEXT_PUBLIC_SITE_URL?.startsWith("https://"), "NEXT_PUBLIC_SITE_URL HTTPS");
