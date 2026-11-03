@@ -58,11 +58,11 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle>((_, ref) => {
     return (
       <aside
         aria-label="Pemutar Audio"
-        className="fixed bottom-5 left-5 z-40 bg-surface border border-border-strong text-secondary text-xs px-4 py-2.5 rounded-full shadow-sm flex items-center gap-2 min-h-[44px]"
+        className="fixed top-5 right-5 z-40 bg-forest-dark/80 backdrop-blur-md border border-gold/30 text-gold-muted text-xs px-3.5 py-2 rounded-full shadow-lg flex items-center gap-2 min-h-[44px]"
         role="status"
       >
-        <Music className="w-4 h-4 text-secondary" aria-hidden="true" />
-        <span>Musik latar tidak tersedia</span>
+        <Music className="w-4 h-4 text-gold shrink-0" aria-hidden="true" />
+        <span className="hidden sm:inline">Musik latar belum tersedia</span>
       </aside>
     );
   }
@@ -70,7 +70,7 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle>((_, ref) => {
   return (
     <aside
       aria-label="Pemutar Audio Latar"
-      className="fixed bottom-5 left-5 z-40 flex items-center gap-2 bg-forest border border-gold/40 text-ivory px-3.5 py-2 rounded-full shadow-lg"
+      className="fixed top-5 right-5 z-40 flex items-center gap-2 bg-forest-dark/90 backdrop-blur-md border border-gold/40 text-ivory px-3.5 py-2 rounded-full shadow-xl"
     >
       <audio
         ref={audioRef}
@@ -97,42 +97,52 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle>((_, ref) => {
         </div>
       ) : (
         <>
+          {/* Spinning Gold Disc Icon */}
+          <div
+            className={`w-7 h-7 rounded-full bg-forest border-2 border-gold flex items-center justify-center text-gold shadow-xs ${
+              isPlaying ? "animate-spin [animation-duration:5s]" : ""
+            }`}
+          >
+            <Music className="w-3.5 h-3.5" aria-hidden="true" />
+          </div>
+
+          <div className="flex flex-col text-left pr-1">
+            <span className="text-xs font-serif font-medium text-ivory max-w-[120px] truncate">
+              {music.title || "Wedding Song"}
+            </span>
+          </div>
+
           <button
             type="button"
             onClick={togglePlay}
-            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-forest-dark hover:bg-forest-light text-gold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
-            aria-label={isPlaying ? "Jeda musik latar" : "Putar musik latar"}
-            title={isPlaying ? "Jeda musik" : "Putar musik"}
+            aria-label={isPlaying ? "Jeda musik" : "Putar musik"}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center text-ivory hover:text-gold transition-colors cursor-pointer"
           >
             {isPlaying ? (
-              <Pause className="w-5 h-5" aria-hidden="true" />
+              <Pause className="w-4 h-4 fill-current" aria-hidden="true" />
             ) : (
-              <Play className="w-5 h-5 ml-0.5" aria-hidden="true" />
+              <Play className="w-4 h-4 fill-current" aria-hidden="true" />
             )}
           </button>
 
           <button
             type="button"
             onClick={toggleMute}
-            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-forest-dark hover:bg-forest-light text-gold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
-            aria-label={isMuted ? "Bunyikan musik latar" : "Bisukan musik latar"}
-            title={isMuted ? "Bunyikan" : "Bisukan"}
+            aria-label={isMuted ? "Bunyikan audio" : "Bisukan audio"}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center text-ivory hover:text-gold transition-colors cursor-pointer"
           >
             {isMuted ? (
-              <VolumeX className="w-5 h-5" aria-hidden="true" />
+              <VolumeX className="w-4 h-4 text-rose-400" aria-hidden="true" />
             ) : (
-              <Volume2 className="w-5 h-5" aria-hidden="true" />
+              <Volume2 className="w-4 h-4" aria-hidden="true" />
             )}
           </button>
 
-          <div className="hidden sm:flex flex-col pr-2 text-left">
-            <span className="text-xs font-medium text-ivory truncate max-w-[140px]">
-              {music.title}
+          {playFeedback && (
+            <span className="text-[11px] text-amber-300 pl-1" role="status">
+              {playFeedback}
             </span>
-            <span className="text-[10px] text-ivory/70">
-              {playFeedback ? playFeedback : isPlaying ? "Memutar" : "Berhenti"}
-            </span>
-          </div>
+          )}
         </>
       )}
     </aside>
