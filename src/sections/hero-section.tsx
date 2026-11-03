@@ -15,11 +15,8 @@ export function HeroSection() {
       aria-label="Sampul Undangan"
       className="relative min-h-[90vh] flex flex-col justify-between items-center text-center px-6 py-16 bg-forest text-ivory overflow-hidden"
     >
-      {/* Background botanical pattern */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none botanical-pattern" />
-
       {/* Top Header */}
-      <div className="relative z-10 max-w-xl mx-auto space-y-2">
+      <div className="relative z-10 max-w-xl mx-auto space-y-3">
         <p className="text-xs uppercase tracking-[0.3em] text-gold font-medium">
           THE WEDDING CELEBRATION OF
         </p>
@@ -44,12 +41,12 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Bottom Date and Invitation Notice */}
+      {/* Bottom Date and Notice */}
       <div className="relative z-10 max-w-md mx-auto space-y-3">
-        <div className="inline-block px-4 py-1.5 rounded-full border border-gold/40 bg-forest-dark/60 text-gold-muted text-xs tracking-wider uppercase">
+        <div className="inline-block px-5 py-2 rounded-full border border-gold/40 bg-forest-dark/80 text-gold-muted text-xs tracking-wider uppercase font-medium">
           {formattedDate}
         </div>
-        <p className="text-xs text-ivory/70 font-sans tracking-wide">
+        <p className="text-base text-ivory/80 font-sans tracking-wide leading-relaxed">
           Bersama merayakan komitmen, cinta, dan awal perjalanan hidup baru
         </p>
       </div>

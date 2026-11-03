@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import type { InvitationData, RsvpData } from "@/types/api";
 import { resolveInvitation } from "@/lib/api";
 
@@ -17,34 +17,52 @@ interface InvitationContextValue {
 
 const InvitationContext = createContext<InvitationContextValue | undefined>(undefined);
 
-interface InvitationProviderProps {
-  token: string | null;
-  children: React.ReactNode;
+function getInitialToken(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return new URLSearchParams(window.location.search).get("invite");
+  } catch {
+    return null;
+  }
 }
 
-export function InvitationProvider({ token, children }: InvitationProviderProps) {
+export function InvitationProvider({ children }: { children: React.ReactNode }) {
+  const [token, setToken] = useState<string | null>(getInitialToken);
   const [invitation, setInvitation] = useState<InvitationData | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(() => Boolean(token));
+  const [isLoading, setIsLoading] = useState<boolean>(() => Boolean(getInitialToken()));
   const [error, setError] = useState<string | null>(null);
   const [isGateOpen, setIsGateOpen] = useState(false);
+  const activeRequestIdRef = useRef<number>(0);
 
+  // Listen for client navigation popstate
   useEffect(() => {
-    let isMounted = true;
+    function handlePopState() {
+      const currentToken = getInitialToken();
+      setToken(currentToken);
+    }
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
+  // Fetch invitation with async completion and race condition guard
+  useEffect(() => {
     if (!token) {
       return;
     }
 
+    let isMounted = true;
+    const currentRequestId = ++activeRequestIdRef.current;
+
     resolveInvitation(token)
       .then((data) => {
-        if (isMounted) {
+        if (isMounted && currentRequestId === activeRequestIdRef.current) {
           setInvitation(data);
           setError(null);
           setIsLoading(false);
         }
       })
       .catch((err: unknown) => {
-        if (isMounted) {
+        if (isMounted && currentRequestId === activeRequestIdRef.current) {
           const message = err instanceof Error ? err.message : "Gagal memuat data undangan";
           setError(message);
           setInvitation(null);
@@ -59,20 +77,28 @@ export function InvitationProvider({ token, children }: InvitationProviderProps)
 
   const retryResolve = useCallback(() => {
     if (!token) return;
+    const currentRequestId = ++activeRequestIdRef.current;
     setIsLoading(true);
     setError(null);
+
     resolveInvitation(token)
       .then((data) => {
-        setInvitation(data);
-        setError(null);
+        if (currentRequestId === activeRequestIdRef.current) {
+          setInvitation(data);
+          setError(null);
+        }
       })
       .catch((err: unknown) => {
-        const message = err instanceof Error ? err.message : "Gagal memuat data undangan";
-        setError(message);
-        setInvitation(null);
+        if (currentRequestId === activeRequestIdRef.current) {
+          const message = err instanceof Error ? err.message : "Gagal memuat data undangan";
+          setError(message);
+          setInvitation(null);
+        }
       })
       .finally(() => {
-        setIsLoading(false);
+        if (currentRequestId === activeRequestIdRef.current) {
+          setIsLoading(false);
+        }
       });
   }, [token]);
 

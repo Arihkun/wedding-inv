@@ -43,7 +43,7 @@ function RsvpActiveForm({
     setSuccessMessage(null);
 
     if (!SITE_KEY) {
-      setErrorMessage("Sistem keamanan Turnstile sedang tidak tersedia. Pengiriman formulir dinonaktifkan.");
+      setErrorMessage("Layanan verifikasi keamanan sedang tidak tersedia. Pengiriman formulir dinonaktifkan.");
       return;
     }
 
@@ -82,34 +82,34 @@ function RsvpActiveForm({
       className="p-6 sm:p-8 rounded-2xl bg-surface border border-border-strong text-left space-y-6 shadow-sm"
     >
       {/* Recipient status indicator */}
-      <div className="p-3.5 rounded-xl bg-ivory border border-border-subtle flex items-center justify-between">
+      <div className="p-4 rounded-xl bg-ivory border border-border-strong flex items-center justify-between">
         <div>
           <p className="text-xs text-secondary">Tamu Undangan:</p>
-          <p className="text-sm font-semibold text-forest">{invitation.name}</p>
+          <p className="text-base font-semibold text-forest">{invitation.name}</p>
         </div>
         <div className="text-right">
           <span className="text-xs text-secondary">Maks. Kuota:</span>
-          <p className="text-xs font-semibold text-forest">{invitation.maxGuests} Orang</p>
+          <p className="text-sm font-semibold text-forest">{invitation.maxGuests} Orang</p>
         </div>
       </div>
 
       {/* Attendance selection */}
       <div className="space-y-2">
-        <label className="block text-xs font-semibold uppercase tracking-wider text-forest">
-          Kehadiran <span className="text-rose-500">*</span>
+        <label className="block text-sm font-semibold uppercase tracking-wider text-forest">
+          Kehadiran <span className="text-rose-600">*</span>
         </label>
         <div className="grid grid-cols-2 gap-3">
           <button
             type="button"
             onClick={() => setAttendance("attending")}
-            className={`px-4 py-3 rounded-xl border text-sm font-medium transition-all flex items-center justify-center gap-2 ${
+            className={`min-h-[48px] px-4 py-3 rounded-xl border text-sm font-medium transition-all flex items-center justify-center gap-2 ${
               attendance === "attending"
                 ? "bg-forest text-ivory border-forest shadow-xs"
-                : "bg-ivory text-secondary border-border-strong hover:bg-surface"
+                : "bg-ivory text-forest border-border-strong hover:bg-surface"
             }`}
           >
             <CheckCircle2
-              className={`w-4 h-4 ${
+              className={`w-5 h-5 ${
                 attendance === "attending" ? "text-gold" : "text-secondary"
               }`}
             />
@@ -119,14 +119,14 @@ function RsvpActiveForm({
           <button
             type="button"
             onClick={() => setAttendance("declined")}
-            className={`px-4 py-3 rounded-xl border text-sm font-medium transition-all flex items-center justify-center gap-2 ${
+            className={`min-h-[48px] px-4 py-3 rounded-xl border text-sm font-medium transition-all flex items-center justify-center gap-2 ${
               attendance === "declined"
                 ? "bg-forest text-ivory border-forest shadow-xs"
-                : "bg-ivory text-secondary border-border-strong hover:bg-surface"
+                : "bg-ivory text-forest border-border-strong hover:bg-surface"
             }`}
           >
             <AlertCircle
-              className={`w-4 h-4 ${
+              className={`w-5 h-5 ${
                 attendance === "declined" ? "text-gold" : "text-secondary"
               }`}
             />
@@ -140,16 +140,16 @@ function RsvpActiveForm({
         <div className="space-y-2">
           <label
             htmlFor="guest-count"
-            className="block text-xs font-semibold uppercase tracking-wider text-forest"
+            className="block text-sm font-semibold uppercase tracking-wider text-forest"
           >
-            Jumlah Tamu Hadir <span className="text-rose-500">*</span>
+            Jumlah Tamu Hadir <span className="text-rose-600">*</span>
           </label>
           <div className="relative">
             <select
               id="guest-count"
               value={guestCount}
               onChange={(e) => setGuestCount(Number(e.target.value))}
-              className="w-full px-4 py-3 rounded-xl bg-ivory border border-border-strong text-forest text-sm focus:outline-none focus:ring-2 focus:ring-forest appearance-none pr-10"
+              className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-ivory border border-border-strong text-forest text-base focus:outline-none focus:ring-2 focus:ring-forest appearance-none pr-10"
             >
               {Array.from({ length: maxGuests }, (_, i) => i + 1).map((num) => (
                 <option key={num} value={num}>
@@ -158,10 +158,10 @@ function RsvpActiveForm({
               ))}
             </select>
             <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-secondary">
-              <Users className="w-4 h-4" />
+              <Users className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-[11px] text-secondary">
+          <p className="text-xs text-secondary mt-1">
             Undangan Anda dialokasikan untuk maksimal {maxGuests} orang tamu.
           </p>
         </div>
@@ -171,9 +171,9 @@ function RsvpActiveForm({
       <div className="space-y-2">
         <label
           htmlFor="rsvp-message"
-          className="block text-xs font-semibold uppercase tracking-wider text-forest"
+          className="block text-sm font-semibold uppercase tracking-wider text-forest"
         >
-          Pesan Khusus untuk Mempelai (Opsional)
+          Pesan untuk Mempelai (Opsional)
         </label>
         <textarea
           id="rsvp-message"
@@ -182,9 +182,9 @@ function RsvpActiveForm({
           maxLength={1000}
           rows={3}
           placeholder="Tuliskan ucapan atau catatan privat untuk kedua mempelai..."
-          className="w-full px-4 py-3 rounded-xl bg-ivory border border-border-strong text-forest text-sm focus:outline-none focus:ring-2 focus:ring-forest resize-none"
+          className="w-full px-4 py-3 rounded-xl bg-ivory border border-border-strong text-forest text-base focus:outline-none focus:ring-2 focus:ring-forest resize-none leading-relaxed"
         />
-        <div className="flex justify-between text-[11px] text-secondary">
+        <div className="flex justify-between text-xs text-secondary">
           <span>Catatan ini hanya dapat dibaca oleh kedua mempelai.</span>
           <span>{message.length} / 1000</span>
         </div>
@@ -202,29 +202,29 @@ function RsvpActiveForm({
       {/* Feedback Alerts */}
       {errorMessage && (
         <div
-          className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-start gap-2"
+          className="p-4 rounded-xl bg-rose-50 border border-rose-300 text-rose-900 text-sm flex items-start gap-2.5"
           role="alert"
         >
-          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-600" />
+          <AlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-rose-700" />
           <span>{errorMessage}</span>
         </div>
       )}
 
       {successMessage && (
         <div
-          className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-start gap-2"
+          className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-950 text-sm flex items-start gap-2.5"
           role="status"
         >
-          <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5 text-emerald-600" />
+          <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5 text-emerald-700" />
           <span>{successMessage}</span>
         </div>
       )}
 
-      {/* Submit Button */}
+      {/* Submit Button (min 44px tap target) */}
       <button
         type="submit"
         disabled={isSubmitting || !SITE_KEY}
-        className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-forest text-ivory text-sm font-semibold hover:bg-forest-light disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest"
+        className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 min-h-[48px] rounded-xl bg-forest text-ivory text-base font-semibold hover:bg-forest-light disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest"
       >
         {isSubmitting ? (
           <span>Menyimpan Konfirmasi...</span>
@@ -258,7 +258,7 @@ export function RsvpSection() {
           <h2 className="editorial-title text-3xl sm:text-4xl text-forest font-normal">
             Konfirmasi Kehadiran (RSVP)
           </h2>
-          <p className="text-sm text-secondary max-w-md mx-auto">
+          <p className="text-base text-secondary max-w-md mx-auto leading-relaxed">
             Mohon konfirmasikan kehadiran Anda agar kami dapat mempersiapkan jamuan terbaik bagi Anda.
           </p>
         </div>
@@ -271,7 +271,7 @@ export function RsvpSection() {
                 <p className="font-serif text-lg font-medium text-forest">
                   Mode Hanya-Lihat (View-Only)
                 </p>
-                <p className="text-xs text-secondary leading-relaxed mt-1">
+                <p className="text-sm text-secondary leading-relaxed mt-1">
                   Fitur RSVP hanya dapat diakses melalui tautan undangan personal yang dikirimkan langsung oleh kedua mempelai. Jika Anda menerima tautan ini via pesan singkat, pastikan membuka tautan lengkap beserta kode undangan Anda.
                 </p>
               </div>
@@ -279,7 +279,7 @@ export function RsvpSection() {
           </div>
         ) : (
           <RsvpActiveForm
-            key={invitation.rsvp?.updatedAt ?? "initial"}
+            key={token}
             token={token}
             invitation={invitation}
             onRsvpUpdated={(rsvp) => {

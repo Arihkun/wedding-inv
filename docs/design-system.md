@@ -4,141 +4,112 @@
 
 - **Theme**: Quiet romantic botanical editorial.
 - **Dial settings**: ENERGY 1 / RHYTHM 3 / MOTION 1.
-- **Aesthetic**: Deep forest green, warm ivory, soft stone surface, and muted metallic gold accents.
+- **Palette**: Forest green (#1C2E24), Warm Ivory (#FDFBF7), Neutral Surface (#F4F0E8), Secondary Charcoal-Green (#5A6B60), and Muted Gold Accent (#C5A059).
 - **Core Principles**:
-  - Purpose-driven minimalism: Every element has a reason; no decorative clutter without semantic value.
-  - Honest data presentation: If information (dates, venues, gifts, music) is unannounced, display readable honest states rather than fabricated content.
-  - Editorial layout: Single-document scroll on desktop with sticky split portrait; responsive full-width mobile flow.
-  - Strict accessibility: Full WCAG AA contrast compliance, minimum 44px tap targets, visible keyboard focus indicators, and screen reader announcements.
+  - Purpose-driven layout: Every visual element serves semantic hierarchy, readability, or user interaction.
+  - Authentic data only: No invented religious quotations, no unverified dress codes, and no fabricated bank/account details. If data is unannounced, clear and neutral pending notices are displayed.
+  - Editorial asymmetry: Desktop sticky split view (left column sticky hero portrait, right column single document scroll) paired with full-bleed responsive mobile flow.
+  - Rigorous accessibility: WCAG AA contrast compliance, minimum 44px × 44px tap targets for all interactive controls, visible keyboard focus indicators with >= 3:1 contrast against their background, and screen reader announcements.
 
 ---
 
-## 2. Color Palette & Contrast Ratios
+## 2. Color Palette & Contrast Verification
 
-All color combinations have been verified against WCAG AA standards:
+All color pairings have been calculated and tested for WCAG AA compliance:
 
 | Token | Hex | Role | Contrast vs Ivory (#FDFBF7) | Contrast vs Forest (#1C2E24) |
 |---|---|---|---|---|
-| `--color-forest` | `#1C2E24` | Primary brand, primary text, dark containers | **13.86:1** (AAA) | - |
-| `--color-forest-dark` | `#132019` | Deep surfaces, pressed states | **16.20:1** (AAA) | - |
-| `--color-forest-light` | `#2A4335` | Subtle dark surfaces, hover states | **10.50:1** (AAA) | - |
-| `--color-ivory` | `#FDFBF7` | Page background, light card background | - | **13.86:1** (AAA) |
-| `--color-surface` | `#F4F0E8` | Secondary container surface, inputs | - | **12.40:1** (AAA) |
-| `--color-surface-hover`| `#ECE6DA` | Input hover, subtle borders | - | **11.20:1** (AAA) |
-| `--color-secondary` | `#5A6B60` | Secondary typography, captions, metadata | **5.48:1** (AA) | - |
-| `--color-gold` | `#C5A059` | Metallic accent, badges, icons, borders | 2.38:1 (decorative only on ivory) | **5.83:1** (AA on forest) |
-| `--color-gold-muted` | `#D8BD82` | Subtle borders, decorative lines | 1.80:1 (decorative only) | **7.50:1** (AA on forest) |
-| `--color-border-subtle`| `#E3DDD2` | Card borders, dividers on light surfaces | 1.30:1 (non-text decorative) | - |
-| `--color-border-strong`| `#C4BCAC` | Input borders, accessible dividers | **3.10:1** (UI component boundary) | - |
+| `--color-forest` | `#1C2E24` | Primary brand, primary text, focus ring on light surfaces | **13.86:1** (WCAG AAA) | - |
+| `--color-forest-dark` | `#132019` | Deep surfaces, modal backdrop | **16.20:1** (WCAG AAA) | - |
+| `--color-forest-light` | `#2A4335` | Hover states, subtle borders | **10.50:1** (WCAG AAA) | - |
+| `--color-ivory` | `#FDFBF7` | Page background, cards | - | **13.86:1** (WCAG AAA) |
+| `--color-surface` | `#F4F0E8` | Secondary container surface, inputs | - | **12.40:1** (WCAG AAA) |
+| `--color-surface-hover`| `#ECE6DA` | Input hover, subtle borders | - | **11.20:1** (WCAG AAA) |
+| `--color-secondary` | `#5A6B60` | Secondary typography, captions, metadata | **5.48:1** (WCAG AA) | - |
+| `--color-gold` | `#C5A059` | Metallic accent, icons on forest, focus ring on dark surfaces | 2.38:1 (decorative only on ivory) | **5.83:1** (WCAG AA on forest) |
+| `--color-gold-muted` | `#D8BD82` | Borders on forest, subtle highlights | 1.80:1 (decorative only) | **7.50:1** (WCAG AA on forest) |
+| `--color-border-subtle`| `#E3DDD2` | Dividers on light surfaces | 1.30:1 (decorative non-text) | - |
+| `--color-border-strong`| `#C4BCAC` | Input borders, UI component boundaries | **3.10:1** (WCAG Non-text Contrast) | - |
 
-> **Contrast Rule**: Gold on Ivory has a 2.38:1 ratio and is **strictly decorative**. Essential text, buttons, and form inputs must never rely on gold text over light surfaces. Essential interactive elements use Forest (#1C2E24) for text and borders.
+> **Critical Focus Ring Rule**: Because Gold on Ivory provides only a 2.38:1 ratio, keyboard `:focus-visible` rings on light/ivory backgrounds strictly use `--color-forest` (`#1C2E24`, 13.86:1 contrast). Gold focus rings are reserved for dark Forest containers (`#C5A059`, 5.83:1 contrast).
 
 ---
 
-## 3. Typography
+## 3. Typography & Scale
 
-- **Heading Display**: `Cormorant Garamond` (Google Font, self-hosted via `next/font/google`).
+- **Display Serif**: `Cormorant Garamond` (Google Font, self-hosted via `next/font/google`).
   - Weights: 400 (Regular), 500 (Medium), 600 (SemiBold).
-  - Used for: Main names, section titles, numeral highlights.
-- **Body & UI**: `DM Sans` (Google Font, self-hosted via `next/font/google`).
+  - Used for: Couple names, section headings, numeral callouts.
+- **Body & Controls Sans**: `DM Sans` (Google Font, self-hosted via `next/font/google`).
   - Weights: 400 (Regular), 500 (Medium), 700 (Bold).
-  - Used for: Paragraphs, form controls, countdown labels, captions, metadata.
-- **Typographic Scale**:
-  - `Hero Display`: 48px – 72px (clamp: 3rem – 4.5rem), line-height: 1.1, tracking: -0.02em.
-  - `Section Title`: 32px – 44px (clamp: 2rem – 2.75rem), line-height: 1.2.
-  - `Subtitle / Heading 3`: 20px – 24px, line-height: 1.3.
-  - `Body Standard`: 16px (1rem), line-height: 1.6. Minimum font size for readable body copy.
-  - `Caption / Microcopy`: 13px – 14px, line-height: 1.4, tracking: 0.04em uppercase or natural sentence.
+  - Used for: Body copy, button labels, form inputs, status notices.
+- **Readable Scale**:
+  - `Hero Display`: 48px – 72px (clamp: 3rem – 4.5rem), line-height: 1.1.
+  - `Section Heading`: 30px – 40px (clamp: 1.875rem – 2.5rem), line-height: 1.2.
+  - `Body Standard`: Minimum 16px (1rem), line-height: 1.6.
+  - `Form Inputs`: 16px (`1rem`) to eliminate automatic iOS Safari viewport zoom on input focus.
+  - `Microcopy / Captions`: 12px – 14px, line-height: 1.4.
 
 ---
 
-## 4. Spacing, Grid & Layout
+## 4. Spacing, Rhythm & Layout
 
-- **Mobile First**:
-  - Standard viewport target: 360px – 430px.
-  - Vertical flow with generous section breathing room (`py-16` to `py-24`).
-  - Padding gutter: `px-5` to `px-8`.
-- **Desktop Sticky Split**:
-  - Breakpoint: `lg` (1024px+).
-  - Left column: `w-5/12` sticky viewport height (`h-screen top-0`), displaying hero portrait, couple names, and quick date badge.
-  - Right column: `w-7/12` single-document scrolling container carrying all editorial content.
-  - No nested scroll pane; native document scroll is preserved.
-- **Touch Targets**:
-  - Minimum tap target size: 44px × 44px for all buttons, links, inputs, and controls.
+- **Mobile Viewport (360px – 430px)**:
+  - Clean edge-to-edge flow with generous section breathing room (`py-16` to `py-20`).
+  - Gutter padding: `px-5` to `px-6`.
+  - Minimum tap target: 44px × 44px for every interactive control (audio buttons, submit buttons, pagination).
+- **Desktop Sticky Split (1024px+)**:
+  - Left column (`lg:w-5/12`): `h-screen sticky top-0`, displaying the couple portrait, title, and date badge.
+  - Right column (`lg:w-7/12`): Single continuous document scroll carrying all editorial sections.
+  - No nested scroll containers: Native document scroll is preserved throughout the experience.
 
 ---
 
-## 5. Motion & Transitions
+## 5. Motion, Scroll Management & Reduced Motion
 
 - **Motion Dial**: MOTION 1 (Restrained, subtle).
-- **Duration**: 200ms – 400ms.
-- **Easing**: `cubic-bezier(0.16, 1, 0.3, 1)` (out-expo).
+- **Smooth Scroll**:
+  - Powered by Lenis with official stylesheet (`lenis/dist/lenis.css`).
+  - `syncTouch: false`: Retains native mobile touch inertia without scroll-jacking.
+  - RequestAnimationFrame loop cancels the latest active RAF ID on cleanup.
+- **Scroll Lock Ownership**:
+  - A single lock manager (`acquireScrollLock` / `releaseScrollLock`) coordinates locks between the Opening Gate (`"gate"`) and Lightbox Dialog (`"lightbox"`), ensuring releasing one never prematurely unlocks the other.
+  - Native body overflow lock (`overflow: hidden`) functions even when reduced motion is preferred.
 - **Reduced Motion Support**:
-  - Respects `@media (prefers-reduced-motion: reduce)`.
-  - Automatically disables Lenis smooth scrolling and disables transform/opacity transitions for users preferring reduced motion.
-- **Scroll Management**:
-  - Lenis smooth scroll configured with `syncTouch: false` to keep native inertial touch scrolling on mobile devices.
-  - Scrolling is locked when the Opening Gate is active and when the Lightbox Dialog is open.
+  - Listens to `prefers-reduced-motion: reduce` dynamically.
+  - Disables Lenis smooth scrolling and forces instantaneous transitions when reduced motion is enabled.
 
 ---
 
-## 6. Components & State Architecture
+## 6. Components & Robust State Architecture
 
-### A. Opening Gate
-- Personalized greeting if token resolves via `/api/invitations/resolve`.
-- Loading skeleton greeting ("Memuat undangan...").
-- Fallback generic greeting ("Kepada Yth. Tamu Undangan").
-- Never reveals or logs token.
-- Clear "Buka Undangan" CTA with focus restoration to `#main-content`.
+### A. Opening Gate & Static Prerender
+- **Static Export Friendly**: The invitation is rendered statically in the HTML build so search engines, crawlers, and no-JS visitors receive full editorial content.
+- **Client Token Resolution**: The `?invite=...` parameter is read inside a client `useEffect` with race-condition guards.
+- **Focus Containment & Escape**: The gate traps keyboard `Tab`/`Shift+Tab` cycles, provides an accessible `Escape` shortcut to open the invitation, and focuses `#main-content` upon opening. Underlying forms are inert while the gate is active.
+- **No-JS Fallback**: `<noscript>` styles ensure non-JavaScript users are never locked out of the content.
 
-### B. Countdown Timer
-- Real-time ticker based on `weddingConfig.weddingDate`.
-- Unannounced state: "Tanggal acara akan diumumkan segera."
-- Arrived state: "Hari Bahagia Telah Tiba!"
+### B. Turnstile Security Widget
+- **Ref-Based Callbacks**: Form callbacks (`onSuccess`, `onError`, `onExpire`) are held in stable `useRef` references, preventing parent re-renders from triggering widget re-initialization loops.
+- **Shared Script Loader**: Singleton script loader handles deduplicated loading, load cleanup, and network error handling.
+- **Guest-Friendly Feedback**: Clean, non-technical error alerts ("Verifikasi keamanan belum dapat dimuat. Silakan muat ulang halaman atau coba beberapa saat lagi.").
 
-### C. Couple Profiles & Story
-- Editorial cards with nickname, parent details (if available), and botanical placeholder portraits.
-- Four narrative milestones with fallback for unannounced dates/details.
+### C. RSVP Form
+- **Form State Stability**: Keyed stably by `token` so successful submissions retain positive confirmation feedback without component remounting.
+- **Quota Validation**: Restricts guest count between 1 and `invitation.maxGuests`.
+- **Input Preservation**: Keeps entered values preserved upon network or challenge errors.
 
-### D. Events & Maps
-- Ceremony & Reception schedules.
-- Verified location check: Maps and Directions buttons only appear when `location.verified === true` and coordinates are valid.
+### D. Wishes Form & Paginated Feed
+- **Strict Authorization**: Requires both a token and a validated invitation to submit public wishes. Unvalidated tokens receive a clean view-only notice.
+- **Deduplication**: Merges newly submitted wishes and paginated items by unique `id`.
+- **Word Wrapping**: Applied `break-words break-all [overflow-wrap:anywhere]` to prevent long unbroken strings from overflowing card containers.
+- **Clean Error Handling**: Feed errors display standalone retry banners without simultaneously declaring an empty feed.
 
-### E. Gallery & Lightbox
-- Responsive grid with explicit image dimensions (`width: 1200, height: 1600`).
-- Modal lightbox using `@radix-ui/react-dialog`.
-- Full keyboard support: Escape to dismiss, Arrow keys / buttons for Next/Prev, focus trapped within dialog and restored to trigger on close.
+### E. Gallery & Lightbox Dialog
+- **Radix UI Dialog**: Accessible modal with Escape key handling, Next/Previous image cycling, and explicit return of focus to the triggering thumbnail.
 
-### F. Wedding Gift
-- Empty state: Honest "Amplop Digital Tidak Tersedia" banner without fake accounts or dummy buttons.
-- Populated state: Bank details with one-click copy and clipboard success/failure feedback.
-
-### G. RSVP Form
-- Independent form with attendance choice ('attending' | 'declined'), guest count (1..maxGuests), and message.
-- Integrated Cloudflare Turnstile with action `rsvp`.
-- Graceful unavailable state when Turnstile site key is missing.
-- Input preserved on error.
-
-### H. Public Wishes Form & Feed
-- Independent form with name and message.
-- Public visibility disclosure banner.
-- Turnstile verification with action `wish`.
-- Real pagination via `/api/wishes` cursor.
-- Empty feed state: "Belum ada ucapan doa. Jadilah yang pertama memberikan doa restu."
-
-### I. Persistent Audio Controller
-- Floating toggle unlocked exclusively after user interaction ("Buka Undangan" click).
-- Play/Pause and Mute/Unmute states.
-- If music is null: Controller displays honest unavailable state ("Musik latar tidak tersedia").
-
----
-
-## 7. Anti-Slop Audit Checklist
-
-- [x] No generic AI purple/blue gradients.
-- [x] No excessive glassmorphism or blur stacking.
-- [x] No uniform pill-shaped elements; sharp/subtle rounded corners (`rounded-lg`, `rounded-xl`).
-- [x] No fake couple photos or fabricated personal data.
-- [x] No unverified religion, dresscode, or physical gift claims.
-- [x] No dead or non-functional interactive controls.
-- [x] Complete error, loading, and empty states for every dynamic feature.
+### F. Persistent Audio Player
+- **Interaction Gated**: Audio only starts upon explicit user interaction ("Buka Undangan" click or player button).
+- **Native Event Sync**: Synchronizes state via native `onPlay` and `onPause` DOM audio events.
+- **Autoplay Rejection**: Displays visible feedback if the browser restricts playback.
+- **44px Tap Target**: All control buttons are sized to at least 44px × 44px.

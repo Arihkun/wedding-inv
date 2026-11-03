@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { MessageSquare, Send, RefreshCw, AlertCircle, CheckCircle2, User, Eye } from "lucide-react";
+import { MessageSquare, Send, RefreshCw, AlertCircle, CheckCircle2, User, Eye, ShieldAlert } from "lucide-react";
 import { useInvitation } from "@/components/invitation-provider";
 import { getWishes, sendWish } from "@/lib/api";
 import { TurnstileWidget, type TurnstileHandle } from "@/components/turnstile";
@@ -15,10 +15,10 @@ function WishesForm({
   onWishCreated,
 }: {
   token: string;
-  invitation: InvitationData | null;
+  invitation: InvitationData;
   onWishCreated: (wish: Wish) => void;
 }) {
-  const [name, setName] = useState<string>(() => invitation?.name ?? "");
+  const [name, setName] = useState<string>(() => invitation.name || "");
   const [message, setMessage] = useState<string>("");
   const [submissionId, setSubmissionId] = useState<string>(() =>
     typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
@@ -38,7 +38,7 @@ function WishesForm({
     setFormSuccess(null);
 
     if (!SITE_KEY) {
-      setFormError("Sistem verifikasi keamanan sedang tidak tersedia. Pengiriman formulir dinonaktifkan.");
+      setFormError("Layanan verifikasi keamanan sedang tidak tersedia. Pengiriman formulir dinonaktifkan.");
       return;
     }
 
@@ -96,17 +96,17 @@ function WishesForm({
       className="p-6 sm:p-8 rounded-2xl bg-ivory border border-border-strong text-left space-y-5 shadow-sm"
     >
       {/* Public Disclosure Notice */}
-      <div className="p-3 rounded-xl bg-surface border border-border-strong flex items-start gap-2.5 text-xs text-secondary">
+      <div className="p-3.5 rounded-xl bg-surface border border-border-strong flex items-start gap-2.5 text-xs text-secondary leading-relaxed">
         <Eye className="w-4 h-4 text-forest shrink-0 mt-0.5" />
         <span>
-          <strong>Pemberitahuan Publik:</strong> Nama dan pesan doa yang Anda kirimkan akan ditampilkan secara publik pada buku tamu digital di bawah ini.
+          <strong>Pemberitahuan Publik:</strong> Nama dan pesan doa yang Anda kirimkan akan ditampilkan secara terbuka pada buku tamu digital di bawah ini.
         </span>
       </div>
 
       {/* Name Input */}
       <div className="space-y-1.5">
-        <label htmlFor="wish-name" className="block text-xs font-semibold uppercase tracking-wider text-forest">
-          Nama Pengirim <span className="text-rose-500">*</span>
+        <label htmlFor="wish-name" className="block text-sm font-semibold uppercase tracking-wider text-forest">
+          Nama Pengirim <span className="text-rose-600">*</span>
         </label>
         <div className="relative">
           <input
@@ -117,18 +117,18 @@ function WishesForm({
             maxLength={100}
             required
             placeholder="Nama Lengkap / Panggilan Anda"
-            className="w-full px-4 py-3 rounded-xl bg-surface border border-border-strong text-forest text-sm focus:outline-none focus:ring-2 focus:ring-forest pl-10"
+            className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-surface border border-border-strong text-forest text-base focus:outline-none focus:ring-2 focus:ring-forest pl-11"
           />
           <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-secondary">
-            <User className="w-4 h-4" />
+            <User className="w-5 h-5" />
           </div>
         </div>
       </div>
 
       {/* Message Input */}
       <div className="space-y-1.5">
-        <label htmlFor="wish-message" className="block text-xs font-semibold uppercase tracking-wider text-forest">
-          Doa &amp; Ucapan <span className="text-rose-500">*</span>
+        <label htmlFor="wish-message" className="block text-sm font-semibold uppercase tracking-wider text-forest">
+          Doa &amp; Ucapan <span className="text-rose-600">*</span>
         </label>
         <textarea
           id="wish-message"
@@ -138,9 +138,9 @@ function WishesForm({
           required
           rows={4}
           placeholder="Tuliskan doa restu, ucapan selamat, dan harapan terbaik Anda..."
-          className="w-full px-4 py-3 rounded-xl bg-surface border border-border-strong text-forest text-sm focus:outline-none focus:ring-2 focus:ring-forest resize-none"
+          className="w-full px-4 py-3 rounded-xl bg-surface border border-border-strong text-forest text-base focus:outline-none focus:ring-2 focus:ring-forest resize-none leading-relaxed"
         />
-        <div className="flex justify-end text-[11px] text-secondary">
+        <div className="flex justify-end text-xs text-secondary">
           <span>{message.length} / 1000</span>
         </div>
       </div>
@@ -157,29 +157,29 @@ function WishesForm({
       {/* Error & Success Feedback */}
       {formError && (
         <div
-          className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-start gap-2"
+          className="p-4 rounded-xl bg-rose-50 border border-rose-300 text-rose-900 text-sm flex items-start gap-2.5"
           role="alert"
         >
-          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-600" />
+          <AlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-rose-700" />
           <span>{formError}</span>
         </div>
       )}
 
       {formSuccess && (
         <div
-          className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-start gap-2"
+          className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-950 text-sm flex items-start gap-2.5"
           role="status"
         >
-          <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5 text-emerald-600" />
+          <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5 text-emerald-700" />
           <span>{formSuccess}</span>
         </div>
       )}
 
-      {/* Submit Button */}
+      {/* Submit Button (min 44px tap target) */}
       <button
         type="submit"
         disabled={isSubmitting || !SITE_KEY}
-        className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-forest text-ivory text-sm font-semibold hover:bg-forest-light disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest"
+        className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 min-h-[48px] rounded-xl bg-forest text-ivory text-base font-semibold hover:bg-forest-light disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest"
       >
         {isSubmitting ? (
           <span>Mengirimkan Doa...</span>
@@ -204,6 +204,18 @@ export function WishesSection() {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [feedError, setFeedError] = useState<string | null>(null);
 
+  const mergeWishes = (existing: Wish[], incoming: Wish[]): Wish[] => {
+    const seen = new Set<string>();
+    const result: Wish[] = [];
+    for (const item of [...incoming, ...existing]) {
+      if (!seen.has(item.id)) {
+        seen.add(item.id);
+        result.push(item);
+      }
+    }
+    return result;
+  };
+
   const fetchWishes = useCallback(async (cursor?: string) => {
     if (cursor) {
       setIsLoadingMore(true);
@@ -214,11 +226,7 @@ export function WishesSection() {
 
     try {
       const page = await getWishes(cursor);
-      if (cursor) {
-        setWishes((prev) => [...prev, ...page.items]);
-      } else {
-        setWishes(page.items);
-      }
+      setWishes((prev) => (cursor ? mergeWishes(prev, page.items) : page.items));
       setNextCursor(page.nextCursor);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Gagal memuat daftar doa dan ucapan.";
@@ -269,28 +277,33 @@ export function WishesSection() {
           <h2 className="editorial-title text-3xl sm:text-4xl text-forest font-normal">
             Untaian Doa &amp; Harapan
           </h2>
-          <p className="text-sm text-secondary max-w-md mx-auto">
+          <p className="text-base text-secondary max-w-md mx-auto leading-relaxed">
             Tinggalkan doa restu dan pesan hangat untuk mengiringi awal perjalanan suci kami berdua.
           </p>
         </div>
 
-        {/* Wishes Form */}
-        {!token ? (
-          <div className="p-6 rounded-2xl bg-ivory border border-border-strong text-left space-y-2">
-            <p className="font-serif text-lg font-medium text-forest">
-              Mode Hanya-Lihat (View-Only)
-            </p>
-            <p className="text-xs text-secondary leading-relaxed">
-              Formulir pengiriman doa restu hanya aktif melalui tautan undangan resmi. Anda tetap dapat membaca doa dan ucapan dari para sahabat dan keluarga di bawah ini.
-            </p>
+        {/* Wishes Form: requires BOTH token AND validated invitation */}
+        {!token || !invitation ? (
+          <div className="p-8 rounded-2xl bg-ivory border border-border-strong text-left space-y-2">
+            <div className="flex items-start gap-3">
+              <ShieldAlert className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
+              <div>
+                <p className="font-serif text-lg font-medium text-forest">
+                  Mode Hanya-Lihat (View-Only)
+                </p>
+                <p className="text-sm text-secondary leading-relaxed mt-1">
+                  Formulir pengiriman doa restu hanya aktif melalui tautan undangan resmi yang telah tervalidasi. Anda tetap dapat membaca doa dan ucapan dari para sahabat dan keluarga di bawah ini.
+                </p>
+              </div>
+            </div>
           </div>
         ) : (
           <WishesForm
-            key={invitation?.name ?? "wishes-form"}
+            key={token}
             token={token}
             invitation={invitation}
             onWishCreated={(newWish) => {
-              setWishes((prev) => [newWish, ...prev.filter((w) => w.id !== newWish.id)]);
+              setWishes((prev) => mergeWishes(prev, [newWish]));
             }}
           />
         )}
@@ -305,7 +318,7 @@ export function WishesSection() {
               type="button"
               onClick={() => fetchWishes()}
               disabled={isLoadingFeed}
-              className="inline-flex items-center gap-1.5 text-xs text-secondary hover:text-forest transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs text-secondary hover:text-forest transition-colors min-h-[44px] px-2 py-1"
               title="Segarkan ucapan"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isLoadingFeed ? "animate-spin" : ""}`} />
@@ -313,28 +326,26 @@ export function WishesSection() {
             </button>
           </div>
 
-          {feedError && (
-            <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center justify-between">
+          {feedError ? (
+            <div className="p-4 rounded-xl bg-rose-50 border border-rose-300 text-rose-900 text-sm flex items-center justify-between">
               <span>{feedError}</span>
               <button
                 type="button"
                 onClick={() => fetchWishes()}
-                className="underline hover:text-rose-950 ml-2"
+                className="underline hover:text-rose-950 ml-2 font-medium min-h-[44px] px-2 py-1 flex items-center"
               >
                 Coba Lagi
               </button>
             </div>
-          )}
-
-          {isLoadingFeed && wishes.length === 0 ? (
+          ) : isLoadingFeed && wishes.length === 0 ? (
             <div className="py-12 text-center text-secondary text-sm flex flex-col items-center gap-2">
               <RefreshCw className="w-5 h-5 animate-spin text-forest" />
               <span>Memuat doa restu para tamu...</span>
             </div>
           ) : wishes.length === 0 ? (
             <div className="py-12 px-6 text-center rounded-2xl bg-ivory border border-border-strong text-secondary space-y-2">
-              <p className="font-serif text-base text-forest">Belum ada ucapan doa</p>
-              <p className="text-xs">
+              <p className="font-serif text-lg text-forest font-medium">Belum ada ucapan doa</p>
+              <p className="text-sm">
                 Jadilah yang pertama memberikan ucapan selamat dan doa restu bagi kedua mempelai!
               </p>
             </div>
@@ -346,10 +357,10 @@ export function WishesSection() {
                   className="p-5 rounded-2xl bg-ivory border border-border-strong text-left space-y-2 shadow-2xs"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-serif text-base font-medium text-forest">
+                    <span className="font-serif text-lg font-medium text-forest">
                       {item.name}
                     </span>
-                    <span className="text-[11px] text-secondary">
+                    <span className="text-xs text-secondary">
                       {new Intl.DateTimeFormat("id-ID", {
                         day: "numeric",
                         month: "short",
@@ -360,7 +371,7 @@ export function WishesSection() {
                     </span>
                   </div>
 
-                  <p className="text-sm text-secondary/90 leading-relaxed whitespace-pre-wrap">
+                  <p className="text-base text-forest leading-relaxed whitespace-pre-wrap break-words break-all [overflow-wrap:anywhere]">
                     {item.message}
                   </p>
                 </div>
@@ -369,17 +380,17 @@ export function WishesSection() {
           )}
 
           {/* Pagination */}
-          {nextCursor && (
+          {nextCursor && !feedError && (
             <div className="text-center pt-2">
               <button
                 type="button"
                 onClick={() => fetchWishes(nextCursor)}
                 disabled={isLoadingMore}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-border-strong bg-ivory text-forest text-xs font-medium hover:bg-surface transition-colors shadow-2xs disabled:opacity-50"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[44px] rounded-xl border border-border-strong bg-ivory text-forest text-sm font-medium hover:bg-surface transition-colors shadow-2xs disabled:opacity-50"
               >
                 {isLoadingMore ? (
                   <>
-                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                    <RefreshCw className="w-4 h-4 animate-spin" />
                     <span>Memuat ucapan lainnya...</span>
                   </>
                 ) : (

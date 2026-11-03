@@ -47,7 +47,7 @@ function ProfileCard({ profile, role }: { profile: Profile; role: string }) {
           href={`https://instagram.com/${profile.instagram.replace(/^@/, "")}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-4 inline-flex items-center gap-1.5 text-xs text-secondary hover:text-forest transition-colors font-medium border border-border-strong px-3 py-1.5 rounded-full hover:bg-surface"
+          className="mt-4 min-h-[44px] inline-flex items-center gap-2 text-sm text-forest hover:text-forest transition-colors font-medium border border-border-strong px-4 py-2.5 rounded-full hover:bg-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest"
         >
           <span>@{profile.instagram.replace(/^@/, "")}</span>
         </a>

@@ -28,27 +28,27 @@ function EventCard({ event }: { event: WeddingEvent }) {
         </h3>
 
         {/* Date & Time */}
-        <div className="space-y-2 pt-2 border-t border-border-subtle text-sm">
-          <div className="flex items-center gap-3 text-secondary">
-            <Calendar className="w-4 h-4 text-forest shrink-0" aria-hidden="true" />
+        <div className="space-y-2 pt-3 border-t border-border-subtle text-base">
+          <div className="flex items-center gap-3 text-forest">
+            <Calendar className="w-5 h-5 text-forest shrink-0" aria-hidden="true" />
             <span>{formattedDate}</span>
           </div>
 
-          <div className="flex items-center gap-3 text-secondary">
-            <Clock className="w-4 h-4 text-forest shrink-0" aria-hidden="true" />
+          <div className="flex items-center gap-3 text-forest">
+            <Clock className="w-5 h-5 text-forest shrink-0" aria-hidden="true" />
             <span>{formattedTime}</span>
           </div>
         </div>
 
         {/* Venue & Address */}
-        <div className="pt-2 border-t border-border-subtle space-y-1">
-          <div className="flex items-start gap-3 text-sm">
-            <MapPin className="w-4 h-4 text-forest shrink-0 mt-0.5" aria-hidden="true" />
+        <div className="pt-3 border-t border-border-subtle space-y-1">
+          <div className="flex items-start gap-3 text-base">
+            <MapPin className="w-5 h-5 text-forest shrink-0 mt-0.5" aria-hidden="true" />
             <div>
-              <p className="font-medium text-forest">
+              <p className="font-semibold text-forest">
                 {event.venue ?? "Lokasi akan diumumkan"}
               </p>
-              <p className="text-xs text-secondary mt-0.5">
+              <p className="text-sm text-secondary mt-1 leading-relaxed">
                 {event.address ?? "Alamat lengkap prosesi akan diinformasikan kemudian."}
               </p>
             </div>
@@ -56,31 +56,31 @@ function EventCard({ event }: { event: WeddingEvent }) {
         </div>
       </div>
 
-      {/* Map Action Button */}
-      <div className="mt-6 pt-4 border-t border-border-subtle">
+      {/* Map Action Button (min-h-[44px]) */}
+      <div className="mt-8 pt-4 border-t border-border-subtle">
         {mapLinks ? (
-          <div className="flex flex-col sm:flex-row gap-2.5">
+          <div className="flex flex-col sm:flex-row gap-3">
             <a
               href={mapLinks.location}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-forest text-ivory text-xs font-medium hover:bg-forest-light transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest"
+              className="min-h-[44px] inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-forest text-ivory text-sm font-medium hover:bg-forest-light transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest"
             >
-              <MapPin className="w-3.5 h-3.5 text-gold" aria-hidden="true" />
+              <MapPin className="w-4 h-4 text-gold" aria-hidden="true" />
               <span>Buka Google Maps</span>
             </a>
             <a
               href={mapLinks.directions}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-border-strong text-forest text-xs font-medium hover:bg-surface transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest"
+              className="min-h-[44px] inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-border-strong text-forest text-sm font-medium hover:bg-surface transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest"
             >
-              <Navigation className="w-3.5 h-3.5 text-secondary" aria-hidden="true" />
+              <Navigation className="w-4 h-4 text-secondary" aria-hidden="true" />
               <span>Petunjuk Arah</span>
             </a>
           </div>
         ) : (
-          <div className="p-3 rounded-xl bg-surface border border-border-subtle text-xs text-secondary">
+          <div className="p-3.5 rounded-xl bg-surface border border-border-strong text-xs text-secondary leading-relaxed">
             Peta penunjuk lokasi Google Maps akan tersedia setelah koordinat resmi terverifikasi.
           </div>
         )}
@@ -106,7 +106,7 @@ export function EventsSection() {
           <h2 className="editorial-title text-3xl sm:text-4xl text-forest font-normal">
             Waktu &amp; Tempat
           </h2>
-          <p className="text-sm text-secondary max-w-md mx-auto">
+          <p className="text-base text-secondary max-w-md mx-auto leading-relaxed">
             Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Anda berkenan hadir dan memberikan doa restu.
           </p>
         </div>

@@ -51,10 +51,10 @@ export function GiftSection() {
         {gifts.length === 0 ? (
           <div className="p-8 rounded-2xl bg-ivory border border-border-strong text-center space-y-3 shadow-xs">
             <p className="text-base font-serif font-medium text-forest">
-              Amplop Digital Sedang Tidak Tersedia
+              Informasi Rekening Belum Tersedia
             </p>
-            <p className="text-xs text-secondary leading-relaxed max-w-md mx-auto">
-              Bagi keluarga dan sahabat yang ingin memberikan tanda kasih secara langsung, dapat menyampaikannya pada kotak amplop di lokasi acara perayaan.
+            <p className="text-sm text-secondary leading-relaxed max-w-md mx-auto">
+              Informasi detail mengenai tanda kasih atau nomor rekening akan diumumkan kemudian. Doa restu Anda merupakan kehormatan terbesar bagi kami.
             </p>
           </div>
         ) : (
@@ -79,7 +79,7 @@ export function GiftSection() {
                   <button
                     type="button"
                     onClick={() => handleCopy(item.accountNumber, index)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-forest text-ivory text-xs font-medium hover:bg-forest-light transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
+                    className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-forest text-ivory text-sm font-medium hover:bg-forest-light transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-forest"
                     aria-label={`Salin nomor rekening ${item.bank}`}
                   >
                     {copiedIndex === index ? (

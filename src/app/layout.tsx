@@ -17,13 +17,13 @@ const dmSans = DM_Sans({
 });
 
 const siteUrl = new URL(
-  process.env.NEXT_PUBLIC_SITE_URL || "https://kinar-oki.pages.dev"
+  process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
 );
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
   title: "Kinar & Oki Wedding Invitation",
-  description: "Undangan Pernikahan Resmi Kinar & Oki. Merayakan hari bahagia dan awal perjalanan suci bersama keluarga dan sahabat terkasih.",
+  description: "Undangan Pernikahan Resmi Kinar & Oki. Merayakan hari bahagia dan awal perjalanan baru bersama keluarga dan sahabat terkasih.",
   openGraph: {
     title: "Kinar & Oki Wedding Invitation",
     description: "Undangan Pernikahan Resmi Kinar & Oki.",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/og.svg",
+        url: "/images/og.png",
         width: 1200,
         height: 630,
         alt: "Undangan Pernikahan Kinar & Oki",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Kinar & Oki Wedding Invitation",
     description: "Undangan Pernikahan Resmi Kinar & Oki.",
-    images: ["/images/og.svg"],
+    images: ["/images/og.png"],
   },
   robots: {
     index: true,

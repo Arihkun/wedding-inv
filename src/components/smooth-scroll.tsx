@@ -3,75 +3,110 @@
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 
-interface SmoothScrollProps {
-  children: React.ReactNode;
-  locked?: boolean;
-}
-
-// Global reference so modal/gate can pause/resume Lenis
+// Single scroll lock manager to avoid conflicts between gate, dialogs, etc.
+const activeLocks = new Set<string>();
 let lenisInstance: Lenis | null = null;
 
-export function stopLenis() {
-  if (lenisInstance) {
-    lenisInstance.stop();
+function applyScrollLockState() {
+  const shouldLock = activeLocks.size > 0;
+  if (typeof document !== "undefined") {
+    if (shouldLock) {
+      document.body.style.overflow = "hidden";
+      if (lenisInstance) {
+        lenisInstance.stop();
+      }
+    } else {
+      document.body.style.overflow = "";
+      if (lenisInstance) {
+        lenisInstance.start();
+      }
+    }
   }
 }
 
-export function startLenis() {
-  if (lenisInstance) {
-    lenisInstance.start();
-  }
+export function acquireScrollLock(key: string) {
+  activeLocks.add(key);
+  applyScrollLockState();
 }
 
-export function SmoothScroll({ children, locked = false }: SmoothScrollProps) {
+export function releaseScrollLock(key: string) {
+  activeLocks.delete(key);
+  applyScrollLockState();
+}
+
+export function isScrollLocked() {
+  return activeLocks.size > 0;
+}
+
+export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    // Respect user's reduced-motion preference
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReducedMotion) {
-      return;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let isReducedMotion = mediaQuery.matches;
+
+    let rafId: number | null = null;
+
+    function initLenis() {
+      if (isReducedMotion) {
+        if (lenisRef.current) {
+          lenisRef.current.destroy();
+          lenisRef.current = null;
+          lenisInstance = null;
+        }
+        applyScrollLockState();
+        return;
+      }
+
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: "vertical",
+        gestureOrientation: "vertical",
+        smoothWheel: true,
+        syncTouch: false, // Maintain native mobile touch momentum
+        touchMultiplier: 1.5,
+      });
+
+      lenisRef.current = lenis;
+      lenisInstance = lenis;
+
+      function raf(time: number) {
+        lenis.raf(time);
+        rafId = requestAnimationFrame(raf);
+      }
+
+      rafId = requestAnimationFrame(raf);
+      applyScrollLockState();
     }
 
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: true,
-      syncTouch: false, // Maintain native touch momentum on mobile
-      touchMultiplier: 1.5,
-    });
+    initLenis();
 
-    lenisRef.current = lenis;
-    lenisInstance = lenis;
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
+    function handlePreferenceChange(e: MediaQueryListEvent) {
+      isReducedMotion = e.matches;
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      initLenis();
     }
 
-    const animationFrameId = requestAnimationFrame(raf);
+    mediaQuery.addEventListener("change", handlePreferenceChange);
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
-      lenis.destroy();
-      lenisRef.current = null;
-      if (lenisInstance === lenis) {
-        lenisInstance = null;
+      mediaQuery.removeEventListener("change", handlePreferenceChange);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+      if (lenisRef.current) {
+        lenisRef.current.destroy();
+        lenisRef.current = null;
+        if (lenisInstance === lenisRef.current) {
+          lenisInstance = null;
+        }
       }
     };
   }, []);
-
-  useEffect(() => {
-    if (lenisRef.current) {
-      if (locked) {
-        lenisRef.current.stop();
-      } else {
-        lenisRef.current.start();
-      }
-    }
-  }, [locked]);
 
   return <>{children}</>;
 }

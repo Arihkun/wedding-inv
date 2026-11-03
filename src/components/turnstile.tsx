@@ -20,7 +20,6 @@ declare global {
       reset: (widgetId?: string) => void;
       remove: (widgetId: string) => void;
     };
-    onloadTurnstileCallback?: () => void;
   }
 }
 
@@ -37,12 +36,86 @@ interface TurnstileWidgetProps {
 
 const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
+// Shared script loading singleton
+let scriptPromise: Promise<void> | null = null;
+
+function loadTurnstileScript(): Promise<void> {
+  if (typeof window === "undefined") {
+    return Promise.reject(new Error("Window undefined"));
+  }
+  if (window.turnstile) {
+    return Promise.resolve();
+  }
+  if (scriptPromise) {
+    return scriptPromise;
+  }
+
+  scriptPromise = new Promise<void>((resolve, reject) => {
+    const existing = document.getElementById("cf-turnstile-script") as HTMLScriptElement | null;
+    if (existing) {
+      if (window.turnstile) {
+        resolve();
+        return;
+      }
+      const onLoad = () => {
+        cleanup();
+        resolve();
+      };
+      const onError = () => {
+        cleanup();
+        scriptPromise = null;
+        reject(new Error("Turnstile script load error"));
+      };
+      const cleanup = () => {
+        existing.removeEventListener("load", onLoad);
+        existing.removeEventListener("error", onError);
+      };
+      existing.addEventListener("load", onLoad);
+      existing.addEventListener("error", onError);
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.id = "cf-turnstile-script";
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    script.async = true;
+    script.defer = true;
+
+    const onLoad = () => {
+      cleanup();
+      resolve();
+    };
+    const onError = () => {
+      cleanup();
+      scriptPromise = null;
+      reject(new Error("Turnstile script load error"));
+    };
+    const cleanup = () => {
+      script.removeEventListener("load", onLoad);
+      script.removeEventListener("error", onError);
+    };
+
+    script.addEventListener("load", onLoad);
+    script.addEventListener("error", onError);
+    document.head.appendChild(script);
+  });
+
+  return scriptPromise;
+}
+
 export const TurnstileWidget = forwardRef<TurnstileHandle, TurnstileWidgetProps>(
   ({ action, onSuccess, onError, onExpire }, ref) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const widgetIdRef = useRef<string | null>(null);
-    const [scriptLoaded, setScriptLoaded] = useState(false);
-    const [unavailable, setUnavailable] = useState(!SITE_KEY);
+    const [status, setStatus] = useState<"loading" | "ready" | "unavailable">(() =>
+      SITE_KEY ? "loading" : "unavailable"
+    );
+
+    // Keep callbacks in ref to prevent inline callbacks from re-triggering widget render
+    const callbacksRef = useRef({ onSuccess, onError, onExpire });
+    useEffect(() => {
+      callbacksRef.current = { onSuccess, onError, onExpire };
+    });
 
     useImperativeHandle(ref, () => ({
       reset: () => {
@@ -58,81 +131,81 @@ export const TurnstileWidget = forwardRef<TurnstileHandle, TurnstileWidgetProps>
 
     useEffect(() => {
       if (!SITE_KEY) {
-        setUnavailable(true);
         return;
       }
 
-      // Check if turnstile script already loaded
-      if (window.turnstile) {
-        setScriptLoaded(true);
-        return;
-      }
+      let isMounted = true;
 
-      const existingScript = document.getElementById("cf-turnstile-script");
-      if (!existingScript) {
-        const script = document.createElement("script");
-        script.id = "cf-turnstile-script";
-        script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
-        script.async = true;
-        script.defer = true;
-        script.onload = () => setScriptLoaded(true);
-        script.onerror = () => {
-          setUnavailable(true);
-          onError?.();
-        };
-        document.head.appendChild(script);
-      } else {
-        existingScript.addEventListener("load", () => setScriptLoaded(true));
-      }
-    }, [onError]);
+      loadTurnstileScript()
+        .then(() => {
+          if (isMounted) {
+            setStatus("ready");
+          }
+        })
+        .catch(() => {
+          if (isMounted) {
+            setStatus("unavailable");
+            callbacksRef.current.onError?.();
+          }
+        });
 
+      return () => {
+        isMounted = false;
+      };
+    }, []);
+
+    // Render widget once script is ready and container is mounted
     useEffect(() => {
-      if (!scriptLoaded || !containerRef.current || !window.turnstile || !SITE_KEY) return;
+      if (status !== "ready" || !containerRef.current || !window.turnstile || !SITE_KEY) {
+        return;
+      }
+
+      let widgetId: string | null = null;
 
       try {
-        const id = window.turnstile.render(containerRef.current, {
+        widgetId = window.turnstile.render(containerRef.current, {
           sitekey: SITE_KEY,
           action,
           theme: "light",
           callback: (token: string) => {
-            onSuccess(token);
+            callbacksRef.current.onSuccess(token);
           },
           "error-callback": () => {
-            onError?.();
+            callbacksRef.current.onError?.();
           },
           "expired-callback": () => {
-            onExpire?.();
+            callbacksRef.current.onExpire?.();
           },
         });
-        widgetIdRef.current = id;
+        widgetIdRef.current = widgetId;
       } catch {
-        setUnavailable(true);
-        onError?.();
+        setStatus("unavailable");
+        callbacksRef.current.onError?.();
       }
 
       return () => {
-        if (widgetIdRef.current && window.turnstile) {
+        if (widgetId && window.turnstile) {
           try {
-            window.turnstile.remove(widgetIdRef.current);
+            window.turnstile.remove(widgetId);
           } catch {
             // ignore
           }
           widgetIdRef.current = null;
         }
       };
-    }, [scriptLoaded, action, onSuccess, onError, onExpire]);
+    }, [status, action]);
 
-    if (unavailable) {
+    if (status === "unavailable") {
       return (
         <div
-          className="rounded-lg border border-amber-300 bg-amber-50 p-3.5 text-xs text-amber-900 flex items-start gap-2.5 my-3"
+          className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-xs text-amber-900 flex items-start gap-2.5 my-3"
           role="alert"
         >
           <ShieldAlert className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
           <div>
-            <p className="font-medium">Sistem verifikasi keamanan sedang tidak tersedia</p>
-            <p className="text-amber-800/90 mt-0.5">
-              Kunci Turnstile belum dikonfigurasi pada environment ini. Pengiriman formulir dinonaktifkan sementara demi keamanan.
+            <p className="font-medium text-sm">Verifikasi keamanan belum dapat dimuat</p>
+            <p className="text-amber-800/90 mt-1 leading-relaxed">
+              Layanan keamanan sedang tidak tersedia pada saat ini. Silakan muat ulang halaman atau coba beberapa saat lagi.
             </p>
           </div>
         </div>

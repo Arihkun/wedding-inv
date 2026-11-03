@@ -24,9 +24,9 @@ export function CountdownSection() {
         </h2>
 
         {!countdown ? (
-          <div className="p-6 rounded-2xl bg-ivory border border-border-strong text-secondary text-sm">
-            <p>Tanggal dan waktu pernikahan akan diumumkan segera.</p>
-            <p className="text-xs text-secondary/80 mt-1">
+          <div className="p-6 rounded-2xl bg-ivory border border-border-strong text-forest text-base leading-relaxed">
+            <p className="font-medium">Tanggal dan waktu pernikahan akan diumumkan segera.</p>
+            <p className="text-sm text-secondary mt-1">
               Nantikan pembaruan jadwal prosesi pernikahan kami.
             </p>
           </div>

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 
 @theme {
   --color-forest: #1C2E24;
@@ -24,6 +25,7 @@
     background-color: var(--color-ivory);
     color: var(--color-forest);
     font-family: var(--font-sans);
+    font-size: 16px;
   }
 
   body {
@@ -32,6 +34,8 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 1rem;
+    line-height: 1.6;
   }
 
   ::selection {
@@ -39,27 +43,41 @@
     color: #1C2E24;
   }
 
-  /* Accessible focus rings */
+  /* Accessible focus indicators with sufficient contrast on light surfaces */
   :focus-visible {
-    outline: 2px solid #C5A059;
+    outline: 2px solid var(--color-forest);
     outline-offset: 2px;
+  }
+
+  /* Accessible focus on dark containers */
+  .bg-forest :focus-visible,
+  .bg-forest-dark :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+
+  /* Ensure inputs are at least 16px to avoid iOS auto-zoom on focus */
+  input, select, textarea {
+    font-size: 1rem;
   }
 }
 
-/* Custom editorial ornaments & botanical styling */
 .editorial-title {
   font-family: var(--font-serif);
   letter-spacing: -0.015em;
 }
 
-.botanical-pattern {
-  background-color: var(--color-ivory);
-  background-image: radial-gradient(#1c2e24 0.6px, transparent 0.6px);
-  background-size: 24px 24px;
-  opacity: 0.85;
+/* Reduced motion preference honor */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
-/* Smooth scrollbar styling */
+/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
 }

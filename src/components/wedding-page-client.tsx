@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import { motion } from "motion/react";
 import { weddingConfig } from "@/config/wedding.config";
 import { formatEventDate } from "@/lib/wedding";
 import { SmoothScroll } from "@/components/smooth-scroll";
@@ -21,10 +22,6 @@ import { RsvpSection } from "@/sections/rsvp-section";
 import { WishesSection } from "@/sections/wishes-section";
 import { ClosingSection } from "@/sections/closing-section";
 
-interface WeddingPageContentProps {
-  token: string | null;
-}
-
 function WeddingPageContent() {
   const { isGateOpen } = useInvitation();
   const audioPlayerRef = useRef<AudioPlayerHandle | null>(null);
@@ -41,26 +38,36 @@ function WeddingPageContent() {
   );
 
   return (
-    <SmoothScroll locked={!isGateOpen}>
-      {/* Opening Gate Modal */}
+    <SmoothScroll>
+      {/* Opening Gate Modal with Focus Containment */}
       <OpeningGate onOpen={handleOpenGate} />
 
-      {/* Floating Audio Controller */}
-      <AudioPlayer ref={audioPlayerRef} />
+      {/* Floating Audio Controller - Hidden and inert until gate is opened */}
+      <div
+        inert={!isGateOpen ? true : undefined}
+        aria-hidden={!isGateOpen}
+        className={!isGateOpen ? "opacity-0 pointer-events-none" : "opacity-100 transition-opacity duration-300"}
+      >
+        <AudioPlayer ref={audioPlayerRef} />
+      </div>
 
       {/* Main Single Document Layout */}
-      <main id="main-content" tabIndex={-1} className="focus:outline-none">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        inert={!isGateOpen ? true : undefined}
+        aria-hidden={!isGateOpen}
+        className="focus:outline-none"
+      >
         <div className="flex flex-col lg:flex-row min-h-screen">
           {/* Desktop Left Column: Sticky Editorial Portrait */}
           <aside
             aria-label="Profil Utama Mempelai"
             className="hidden lg:flex lg:w-5/12 lg:h-screen lg:sticky lg:top-0 flex-col justify-between items-center text-center p-10 bg-forest text-ivory border-r border-gold/30 z-20 overflow-hidden"
           >
-            <div className="absolute inset-0 opacity-10 pointer-events-none botanical-pattern" />
-
             <div className="relative z-10 space-y-2 mt-4">
               <p className="text-xs uppercase tracking-[0.3em] text-gold font-medium">
-                WALIMATUL &apos;URS
+                UNDANGAN PERNIKAHAN
               </p>
               <h1 className="editorial-title text-5xl xl:text-6xl font-normal text-ivory tracking-tight">
                 {weddingConfig.couple.title}
@@ -82,18 +89,23 @@ function WeddingPageContent() {
             </div>
 
             <div className="relative z-10 space-y-2 mb-4">
-              <div className="inline-block px-4 py-1.5 rounded-full border border-gold/40 bg-forest-dark/70 text-gold-muted text-xs tracking-wider uppercase">
+              <div className="inline-block px-4 py-1.5 rounded-full border border-gold/40 bg-forest-dark/70 text-gold-muted text-xs tracking-wider uppercase font-medium">
                 {formattedDate}
               </div>
-              <p className="text-xs text-ivory/60 font-sans tracking-wide">
+              <p className="text-xs text-ivory/70 font-sans tracking-wide">
                 Menuju Hari Bahagia Kinar &amp; Oki
               </p>
             </div>
           </aside>
 
-          {/* Right Column (and Mobile Flow): Editorial Content Stream */}
-          <div className="w-full lg:w-7/12 flex flex-col">
-            {/* Mobile Hero (only rendered on viewports below lg) */}
+          {/* Right Column (and Mobile Flow): Editorial Content Stream with restrained Motion */}
+          <motion.div
+            initial={false}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+            className="w-full lg:w-7/12 flex flex-col"
+          >
+            {/* Mobile Hero (rendered on viewports below lg) */}
             <div className="block lg:hidden">
               <HeroSection />
             </div>
@@ -107,16 +119,16 @@ function WeddingPageContent() {
             <RsvpSection />
             <WishesSection />
             <ClosingSection />
-          </div>
+          </motion.div>
         </div>
       </main>
     </SmoothScroll>
   );
 }
 
-export function WeddingPageClient({ token }: WeddingPageContentProps) {
+export function WeddingPageClient() {
   return (
-    <InvitationProvider token={token}>
+    <InvitationProvider>
       <WeddingPageContent />
     </InvitationProvider>
   );
