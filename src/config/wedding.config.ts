@@ -91,7 +91,10 @@ export const weddingConfig: WeddingConfig = {
       height: 750,
     },
   ],
-  gifts: [],
+  gifts: [
+    { bank: "BCA", accountNumber: "8801234567", holder: "Kinar Maharani" },
+    { bank: "Bank Mandiri", accountNumber: "1370012345678", holder: "Oki Pratama" },
+  ],
   qris: null,
   music: null,
   invitation: { defaultGreeting: "Tamu Undangan", maxWishLength: 1000 },

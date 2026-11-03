@@ -10,8 +10,8 @@ import { InvitationProvider, useInvitation } from "@/components/invitation-provi
 import { OpeningGate } from "@/components/opening-gate";
 import { AudioPlayer, type AudioPlayerHandle } from "@/components/audio-player";
 import { Reveal } from "@/components/reveal";
-import { FloatingNav } from "@/components/floating-nav";
 import { FloatingPetals, MonogramCrest } from "@/components/botanical-ornaments";
+import { EditorialMarquee } from "@/components/editorial-marquee";
 
 // Sections
 import { HeroSection } from "@/sections/hero-section";
@@ -68,14 +68,6 @@ function WeddingPageContent() {
         className={shouldContainInert ? "opacity-0 pointer-events-none" : "opacity-100 transition-opacity duration-300"}
       >
         <AudioPlayer ref={audioPlayerRef} />
-      </div>
-
-      {/* Floating Glassmorphic Bottom Navigation Bar */}
-      <div
-        inert={shouldContainInert ? true : undefined}
-        aria-hidden={shouldContainInert ? true : undefined}
-      >
-        <FloatingNav />
       </div>
 
       {/* Main Single Document Layout */}
@@ -136,12 +128,15 @@ function WeddingPageContent() {
             initial={false}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
-            className="w-full lg:w-7/12 flex flex-col pb-20 sm:pb-24"
+            className="w-full lg:w-7/12 flex flex-col"
           >
             {/* Mobile Hero (rendered on viewports below lg) */}
             <div className="block lg:hidden">
               <HeroSection />
             </div>
+
+            {/* Haute Couture Editorial Marquee Ribbon */}
+            <EditorialMarquee />
 
             <CountdownSection />
             <CoupleSection />

@@ -9,6 +9,7 @@ import { useInvitation } from "@/components/invitation-provider";
 import { formatEventDate } from "@/lib/wedding";
 import { acquireScrollLock, releaseScrollLock } from "@/components/smooth-scroll";
 import { CornerFlourish } from "@/components/botanical-ornaments";
+import { BorderBeam } from "@/components/border-beam";
 
 interface OpeningGateProps {
   onOpen: () => void;
@@ -128,6 +129,9 @@ export function OpeningGate({ onOpen }: OpeningGateProps) {
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               className="relative max-w-md w-full my-auto mx-auto bg-forest border-2 border-gold/40 rounded-3xl p-6 sm:p-10 text-center shadow-[0_20px_50px_rgba(0,0,0,0.6)] overflow-hidden"
             >
+              {/* Shimmering Animated Perimeter Beam (Magic UI inspired) */}
+              <BorderBeam size={280} duration={14} colorFrom="#D8BD82" colorTo="#C5A059" />
+
               {/* Corner flourishes */}
               <CornerFlourish position="top-left" className="top-2 left-2" />
               <CornerFlourish position="top-right" className="top-2 right-2" />
