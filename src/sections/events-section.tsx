@@ -111,7 +111,7 @@ export function EventsSection() {
           </p>
         </div>
 
-        <div className="flex flex-col md:flex-row items-stretch justify-center gap-8">
+        <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-stretch justify-center gap-8">
           {events.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}

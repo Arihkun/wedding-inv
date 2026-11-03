@@ -17,7 +17,7 @@ export function StorySection() {
         <h2 className="editorial-title text-3xl sm:text-4xl text-forest font-normal">
           Untaian Kisah Bersama
         </h2>
-        <p className="text-sm text-secondary max-w-md mx-auto">
+        <p className="text-base text-secondary max-w-md mx-auto leading-relaxed">
           Setiap langkah dan babak perjalanan yang membawa kami pada titik indah ini.
         </p>
       </div>
@@ -47,7 +47,7 @@ export function StorySection() {
                   }`}
                 >
                   {item.date && (
-                    <span className="inline-block text-[11px] font-semibold tracking-wider text-gold-muted uppercase mb-1">
+                    <span className="inline-block text-xs font-semibold tracking-wider text-forest uppercase mb-1">
                       {item.date}
                     </span>
                   )}
@@ -61,7 +61,7 @@ export function StorySection() {
                       {item.description}
                     </p>
                   ) : (
-                    <p className="text-xs text-secondary/70 italic">
+                    <p className="text-sm text-secondary italic leading-relaxed">
                       Cerita pada bagian ini akan ditambahkan oleh Kinar dan Oki.
                     </p>
                   )}

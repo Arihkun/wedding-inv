@@ -292,7 +292,7 @@ export function WishesSection() {
             Untaian Doa &amp; Harapan
           </h2>
           <p className="text-base text-secondary max-w-md mx-auto leading-relaxed">
-            Tinggalkan doa restu dan pesan hangat untuk mengiringi awal perjalanan suci kami berdua.
+            Tinggalkan doa restu dan pesan hangat untuk mengiringi awal perjalanan baru kami berdua.
           </p>
         </div>
 

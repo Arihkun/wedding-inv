@@ -34,7 +34,7 @@ export function ClosingSection() {
           <p className="editorial-title text-3xl font-normal text-ivory">
             {weddingConfig.couple.title}
           </p>
-          <p className="text-xs text-ivory/60 mt-1">
+          <p className="text-sm text-ivory/85 mt-1">
             Beserta Seluruh Keluarga Besar
           </p>
         </div>
