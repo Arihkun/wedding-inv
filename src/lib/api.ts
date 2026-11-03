@@ -10,7 +10,7 @@ async function request<T>(path: string, method = "GET", body?: unknown): Promise
     cache: "no-store",
     referrerPolicy: "no-referrer",
   });
-  const data = await response.json().catch(() => null);
+  const data = await response.json().catch(() => null) as { error?: { code?: string; message?: string } } | null;
   if (!response.ok) throw new ApiError(data?.error?.code ?? "UNAVAILABLE", data?.error?.message ?? "Layanan belum tersedia. Silakan coba lagi.", response.status);
   return data as T;
 }
