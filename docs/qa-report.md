@@ -37,3 +37,17 @@ Production content checker currently rejects missing data by design. GitHub remo
 - Purpose gate PASS: green/ivory establishes readable hierarchy; gold is accent; portrait panel and asymmetrical gallery support couple photography; no decorative dot grid or arbitrary sparkle emblem.
 - Liveliness PASS for baseline: ENERGY 1 / RHYTHM 3 / MOTION 1, typography and portrait are focal points; story/event/gallery sections vary composition. Photos remain explicitly placeholders.
 - Craftsmanship PASS for exercised states: 4 viewport widths without overflow, form success/error, missing content, offline retry, reduced-motion toggle and focus restoration verified. No universal accessibility or performance compliance claim.
+
+
+## Frontend Visual & Accessibility Polish Review (Commit 9fa62c7 + follow-up)
+
+- **Color Contrast & Typography Polish**:
+  - Story Section: Date label adjusted to `text-forest text-xs font-semibold uppercase` (13.86:1 contrast ratio against Ivory `#FDFCFA`). Story placeholder body adjusted to `text-secondary text-sm italic leading-relaxed` (5.48:1 contrast, comfortably passing WCAG AA 4.5:1).
+  - Closing Section: Sub-footer credit text updated from low-contrast `text-ivory/60` to `text-sm text-ivory/85` (>10:1 contrast against deep forest background `#1B3B2B`).
+- **Neutral Tone & Factual Wedding Text**:
+  - Verified and eliminated residual non-factual phrases ("janji suci" and "perjalanan suci") across `couple-section.tsx` and `wishes-section.tsx`. Wording is strictly respectful, factual, and neutral ("perayaan pernikahan kami berdua", "perjalanan baru kami berdua").
+- **1024px Narrow Desktop Layout Hardening**:
+  - Evaluated split layout behavior at 1024px viewport width (sticky left hero column ~426px, right editorial column ~597px).
+  - Adjusted cards in `couple-section.tsx` and `events-section.tsx` to `flex-col sm:flex-row lg:flex-col xl:flex-row` so cards stack cleanly inside the 597px container at 1024px-1279px and only expand horizontally at >=1280px, avoiding column overflow and card squishing.
+- **Verification Status**:
+  - `npm run check` fully passes: ESLint clean, TypeScript strict typecheck clean, 20/20 Vitest unit/integration tests passing, Open Graph generation verified, and Next.js Turbopack static export completed.
