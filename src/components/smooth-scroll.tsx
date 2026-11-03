@@ -62,13 +62,13 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       }
 
       const lenis = new Lenis({
-        duration: 1.2,
+        duration: 1.5,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         orientation: "vertical",
         gestureOrientation: "vertical",
         smoothWheel: true,
         syncTouch: false, // Maintain native mobile touch momentum
-        touchMultiplier: 1.5,
+        touchMultiplier: 1.8,
       });
 
       lenisRef.current = lenis;

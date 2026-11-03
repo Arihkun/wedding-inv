@@ -112,17 +112,17 @@ export function OpeningGate({ onOpen }: OpeningGateProps) {
             animate={{ opacity: 1 }}
             exit={{
               opacity: 0,
-              y: -24,
-              transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+              y: -40,
+              transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
             }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-forest text-ivory overflow-y-auto px-4 py-8"
           >
             {/* Decorative inner frame */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 16 }}
+              initial={{ opacity: 0, scale: 0.94, y: 24 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.98, y: -16 }}
-              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              exit={{ opacity: 0, scale: 0.96, y: -24 }}
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
               className="relative max-w-md w-full my-auto mx-auto bg-forest-dark border border-gold/30 rounded-2xl p-6 sm:p-10 text-center shadow-2xl"
             >
           <p className="text-xs uppercase tracking-[0.25em] text-gold font-medium mb-3">
@@ -195,15 +195,17 @@ export function OpeningGate({ onOpen }: OpeningGateProps) {
           </div>
 
           {/* Buka Undangan Action Button (min 44px tap target) */}
-          <button
+          <motion.button
             ref={buttonRef}
             type="button"
             onClick={handleOpen}
-            className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 min-h-[48px] rounded-xl bg-gold text-forest font-semibold text-base tracking-wide shadow-md hover:bg-gold-muted active:scale-[0.98] transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 min-h-[48px] rounded-xl bg-gold text-forest font-semibold text-base tracking-wide shadow-md hover:bg-gold-muted transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-white cursor-pointer"
           >
             <MailOpen className="w-5 h-5" aria-hidden="true" />
             <span>Buka Undangan</span>
-          </button>
+          </motion.button>
 
           <p className="text-[11px] text-ivory/50 mt-3">
             Tekan tombol di atas atau tombol Escape pada keyboard untuk membuka

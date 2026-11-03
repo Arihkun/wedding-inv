@@ -1,4 +1,5 @@
 import { Calendar, Clock, MapPin, Navigation } from "lucide-react";
+import { motion } from "motion/react";
 import { weddingConfig } from "@/config/wedding.config";
 import { formatEventDate, formatEventTime, getMapLinks } from "@/lib/wedding";
 import type { WeddingEvent } from "@/types/wedding";
@@ -18,7 +19,11 @@ function EventCard({ event }: { event: WeddingEvent }) {
   const mapLinks = getMapLinks(event);
 
   return (
-    <div className="flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-ivory border border-border-strong shadow-sm max-w-md w-full text-left">
+    <motion.div
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+      className="flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-ivory border border-border-strong shadow-sm hover:shadow-md transition-shadow max-w-md w-full text-left"
+    >
       <div className="space-y-4">
         <div className="inline-block px-3 py-1 rounded-full bg-surface border border-border-strong text-xs font-semibold uppercase tracking-wider text-secondary">
           {event.title}
@@ -86,7 +91,7 @@ function EventCard({ event }: { event: WeddingEvent }) {
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
