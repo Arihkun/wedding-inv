@@ -6,6 +6,7 @@ import { useInvitation } from "@/components/invitation-provider";
 import { saveRsvp } from "@/lib/api";
 import { TurnstileWidget, type TurnstileHandle } from "@/components/turnstile";
 import type { Attendance, RsvpInput, InvitationData } from "@/types/api";
+import { Reveal } from "@/components/reveal";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
@@ -251,7 +252,7 @@ export function RsvpSection() {
       className="py-20 px-6 bg-ivory text-forest border-t border-border-subtle"
     >
       <div className="max-w-xl mx-auto text-center space-y-6">
-        <div className="space-y-3">
+        <Reveal y={16} className="space-y-3">
           <p className="text-xs uppercase tracking-[0.25em] text-secondary font-medium">
             RESERVASI TEMPAT
           </p>
@@ -261,32 +262,34 @@ export function RsvpSection() {
           <p className="text-base text-secondary max-w-md mx-auto leading-relaxed">
             Mohon konfirmasikan kehadiran Anda agar kami dapat mempersiapkan jamuan terbaik bagi Anda.
           </p>
-        </div>
+        </Reveal>
 
-        {!token || !invitation ? (
-          <div className="p-8 rounded-2xl bg-surface border border-border-strong text-left space-y-3">
-            <div className="flex items-start gap-3">
-              <ShieldAlert className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
-              <div>
-                <p className="font-serif text-lg font-medium text-forest">
-                  Mode Hanya-Lihat (View-Only)
-                </p>
-                <p className="text-sm text-secondary leading-relaxed mt-1">
-                  Fitur RSVP hanya dapat diakses melalui tautan undangan personal yang dikirimkan langsung oleh kedua mempelai. Jika Anda menerima tautan ini via pesan singkat, pastikan membuka tautan lengkap beserta kode undangan Anda.
-                </p>
+        <Reveal delay={0.15} y={20}>
+          {!token || !invitation ? (
+            <div className="p-8 rounded-2xl bg-surface border border-border-strong text-left space-y-3">
+              <div className="flex items-start gap-3">
+                <ShieldAlert className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-serif text-lg font-medium text-forest">
+                    Mode Hanya-Lihat (View-Only)
+                  </p>
+                  <p className="text-sm text-secondary leading-relaxed mt-1">
+                    Fitur RSVP hanya dapat diakses melalui tautan undangan personal yang dikirimkan langsung oleh kedua mempelai. Jika Anda menerima tautan ini via pesan singkat, pastikan membuka tautan lengkap beserta kode undangan Anda.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <RsvpActiveForm
-            key={token}
-            token={token}
-            invitation={invitation}
-            onRsvpUpdated={(rsvp) => {
-              if (rsvp) updateRsvpInState(rsvp);
-            }}
-          />
-        )}
+          ) : (
+            <RsvpActiveForm
+              key={token}
+              token={token}
+              invitation={invitation}
+              onRsvpUpdated={(rsvp) => {
+                if (rsvp) updateRsvpInState(rsvp);
+              }}
+            />
+          )}
+        </Reveal>
       </div>
     </section>
   );

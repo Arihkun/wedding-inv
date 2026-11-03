@@ -3,6 +3,7 @@
 import { useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { MailOpen, RefreshCw } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { weddingConfig } from "@/config/wedding.config";
 import { useInvitation } from "@/components/invitation-provider";
 import { formatEventDate } from "@/lib/wedding";
@@ -85,10 +86,6 @@ export function OpeningGate({ onOpen }: OpeningGateProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isGateOpen, handleOpen]);
 
-  if (isGateOpen) {
-    return null;
-  }
-
   const formattedDate = formatEventDate(
     weddingConfig.weddingDate,
     weddingConfig.timezone,
@@ -103,16 +100,31 @@ export function OpeningGate({ onOpen }: OpeningGateProps) {
         `}</style>
       </noscript>
 
-      <div
-        id="opening-gate"
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Undangan Pernikahan Kinar dan Oki"
-        className="fixed inset-0 z-50 flex items-center justify-center bg-forest text-ivory overflow-y-auto px-4 py-8"
-      >
-        {/* Decorative inner frame */}
-        <div className="relative max-w-md w-full my-auto mx-auto bg-forest-dark border border-gold/30 rounded-2xl p-6 sm:p-10 text-center shadow-2xl">
+      <AnimatePresence>
+        {!isGateOpen && (
+          <motion.div
+            id="opening-gate"
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Undangan Pernikahan Kinar dan Oki"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{
+              opacity: 0,
+              y: -24,
+              transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+            }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-forest text-ivory overflow-y-auto px-4 py-8"
+          >
+            {/* Decorative inner frame */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.98, y: -16 }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="relative max-w-md w-full my-auto mx-auto bg-forest-dark border border-gold/30 rounded-2xl p-6 sm:p-10 text-center shadow-2xl"
+            >
           <p className="text-xs uppercase tracking-[0.25em] text-gold font-medium mb-3">
             UNDANGAN PERNIKAHAN
           </p>
@@ -196,8 +208,10 @@ export function OpeningGate({ onOpen }: OpeningGateProps) {
           <p className="text-[11px] text-ivory/50 mt-3">
             Tekan tombol di atas atau tombol Escape pada keyboard untuk membuka
           </p>
-        </div>
-      </div>
-    </>
+        </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</>
   );
 }

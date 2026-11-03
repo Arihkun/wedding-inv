@@ -2,6 +2,7 @@ import { Calendar, Clock, MapPin, Navigation } from "lucide-react";
 import { weddingConfig } from "@/config/wedding.config";
 import { formatEventDate, formatEventTime, getMapLinks } from "@/lib/wedding";
 import type { WeddingEvent } from "@/types/wedding";
+import { Reveal } from "@/components/reveal";
 
 function EventCard({ event }: { event: WeddingEvent }) {
   const formattedDate = formatEventDate(
@@ -99,7 +100,7 @@ export function EventsSection() {
       className="py-20 px-6 bg-surface text-forest border-t border-border-subtle"
     >
       <div className="max-w-4xl mx-auto text-center space-y-12">
-        <div className="space-y-3">
+        <Reveal y={16} className="space-y-3">
           <p className="text-xs uppercase tracking-[0.25em] text-secondary font-medium">
             AGENDA PERAYAAN
           </p>
@@ -109,11 +110,18 @@ export function EventsSection() {
           <p className="text-base text-secondary max-w-md mx-auto leading-relaxed">
             Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Anda berkenan hadir dan memberikan doa restu.
           </p>
-        </div>
+        </Reveal>
 
         <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-stretch justify-center gap-8">
-          {events.map((event) => (
-            <EventCard key={event.id} event={event} />
+          {events.map((event, index) => (
+            <Reveal
+              key={event.id}
+              delay={index * 0.15}
+              y={24}
+              className="flex justify-center w-full max-w-md"
+            >
+              <EventCard event={event} />
+            </Reveal>
           ))}
         </div>
       </div>

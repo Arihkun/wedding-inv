@@ -9,6 +9,7 @@ import { SmoothScroll } from "@/components/smooth-scroll";
 import { InvitationProvider, useInvitation } from "@/components/invitation-provider";
 import { OpeningGate } from "@/components/opening-gate";
 import { AudioPlayer, type AudioPlayerHandle } from "@/components/audio-player";
+import { Reveal } from "@/components/reveal";
 
 // Sections
 import { HeroSection } from "@/sections/hero-section";
@@ -78,16 +79,16 @@ function WeddingPageContent() {
             aria-label="Profil Utama Mempelai"
             className="hidden lg:flex lg:w-5/12 lg:h-screen lg:sticky lg:top-0 flex-col justify-between items-center text-center p-10 bg-forest text-ivory border-r border-gold/30 z-20 overflow-hidden"
           >
-            <div className="relative z-10 space-y-2 mt-4">
+            <Reveal delay={0.1} y={16} className="relative z-10 space-y-2 mt-4">
               <p className="text-xs uppercase tracking-[0.3em] text-gold font-medium">
                 UNDANGAN PERNIKAHAN
               </p>
               <h1 className="editorial-title text-5xl xl:text-6xl font-normal text-ivory tracking-tight">
                 {weddingConfig.couple.title}
               </h1>
-            </div>
+            </Reveal>
 
-            <div className="relative z-10 my-auto w-full max-w-xs">
+            <Reveal delay={0.25} y={20} scale={0.97} className="relative z-10 my-auto w-full max-w-xs">
               <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden border-2 border-gold/40 shadow-2xl">
                 <Image
                   src={weddingConfig.hero.src}
@@ -99,16 +100,16 @@ function WeddingPageContent() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-forest-dark/40 via-transparent to-transparent pointer-events-none" />
               </div>
-            </div>
+            </Reveal>
 
-            <div className="relative z-10 space-y-2 mb-4">
+            <Reveal delay={0.4} y={16} className="relative z-10 space-y-2 mb-4">
               <div className="inline-block px-4 py-1.5 rounded-full border border-gold/40 bg-forest-dark/70 text-gold-muted text-xs tracking-wider uppercase font-medium">
                 {formattedDate}
               </div>
               <p className="text-xs text-ivory/70 font-sans tracking-wide">
                 Menuju Hari Bahagia Kinar &amp; Oki
               </p>
-            </div>
+            </Reveal>
           </aside>
 
           {/* Right Column (and Mobile Flow): Editorial Content Stream with restrained Motion */}
