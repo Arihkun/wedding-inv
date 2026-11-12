@@ -28,8 +28,8 @@ export function StorySection() {
       </Reveal>
 
       <div className="relative max-w-xl mx-auto">
-        {/* Vertical timeline line with gold gradient */}
-        <div className="absolute left-4 sm:left-1/2 top-4 bottom-4 w-[2px] bg-gradient-to-b from-gold/30 via-gold to-gold/30 -translate-x-1/2 hidden sm:block" />
+        {/* Vertical timeline line with gold gradient (both mobile & desktop) */}
+        <div className="absolute left-3.5 sm:left-1/2 top-4 bottom-4 w-[2px] bg-gradient-to-b from-gold/30 via-gold to-gold/30 -translate-x-1/2 block" />
 
         <div className="space-y-10 sm:space-y-14">
           {stories.map((item, index) => {
@@ -40,18 +40,18 @@ export function StorySection() {
                 key={item.id}
                 delay={index * 0.12}
                 y={20}
-                className={`relative flex flex-col sm:flex-row items-start ${
+                className={`relative flex flex-col sm:flex-row items-start pl-8 sm:pl-0 ${
                   isEven ? "sm:flex-row-reverse" : ""
                 } gap-6 sm:gap-10`}
               >
-                {/* Center marker floret */}
-                <div className="hidden sm:flex absolute left-1/2 -translate-x-1/2 top-3 w-5 h-5 rounded-full border-2 border-forest bg-gold items-center justify-center z-10 shadow-md">
-                  <div className="w-2 h-2 rounded-full bg-forest-dark" />
+                {/* Marker floret on timeline line */}
+                <div className="flex absolute left-3.5 sm:left-1/2 -translate-x-1/2 top-4 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-forest bg-gold items-center justify-center z-10 shadow-md">
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-forest-dark animate-ping" />
                 </div>
 
                 {/* Content card */}
                 <div
-                  className={`w-full sm:w-[calc(50%-1.5rem)] p-6 rounded-3xl bg-surface border-2 border-gold/30 shadow-md text-left ${
+                  className={`w-full sm:w-[calc(50%-1.5rem)] p-6 rounded-3xl bg-surface border-2 border-gold/30 shadow-md hover:border-gold transition-colors text-left ${
                     isEven ? "sm:text-left" : "sm:text-right"
                   }`}
                 >

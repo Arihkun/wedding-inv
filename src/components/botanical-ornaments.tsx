@@ -150,59 +150,92 @@ export function MonogramCrest({ className = "" }: { className?: string }) {
 }
 
 /**
- * Gentle ambient floating petals in the background
+ * Gentle ambient floating petals and gold sparkles in the background
  */
 export function FloatingPetals() {
   const shouldReduceMotion = useReducedMotion();
 
-  if (shouldReduceMotion) return null;
-
-  const petals = [
-    { id: 1, left: "8%", delay: 0, duration: 18, size: 14 },
-    { id: 2, left: "24%", delay: 4, duration: 22, size: 18 },
-    { id: 3, left: "42%", delay: 2, duration: 20, size: 12 },
-    { id: 4, left: "68%", delay: 6, duration: 25, size: 16 },
-    { id: 5, left: "86%", delay: 3, duration: 19, size: 14 },
+  const particles = [
+    { id: 1, left: "6%", delay: 0, duration: 14, size: 16, type: "petal", rotate: 180 },
+    { id: 2, left: "18%", delay: 3.5, duration: 17, size: 10, type: "sparkle", rotate: 90 },
+    { id: 3, left: "32%", delay: 1.5, duration: 16, size: 20, type: "petal", rotate: 270 },
+    { id: 4, left: "48%", delay: 5, duration: 15, size: 8, type: "sparkle", rotate: 120 },
+    { id: 5, left: "62%", delay: 2, duration: 18, size: 18, type: "petal", rotate: 360 },
+    { id: 6, left: "75%", delay: 6, duration: 13, size: 11, type: "sparkle", rotate: 180 },
+    { id: 7, left: "88%", delay: 1, duration: 16, size: 16, type: "petal", rotate: 220 },
+    { id: 8, left: "94%", delay: 4, duration: 19, size: 9, type: "sparkle", rotate: 45 },
   ];
+
+  if (shouldReduceMotion) {
+    return (
+      <div
+        className="fixed inset-0 pointer-events-none overflow-hidden z-10 select-none opacity-40"
+        aria-hidden="true"
+      >
+        {particles.slice(0, 4).map((p) => (
+          <div
+            key={p.id}
+            style={{
+              position: "absolute",
+              left: p.left,
+              top: `${(p.id * 22) % 85}%`,
+              width: p.size,
+              height: p.size,
+            }}
+            className="text-gold"
+          >
+            ✦
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div
       className="fixed inset-0 pointer-events-none overflow-hidden z-10 select-none"
       aria-hidden="true"
     >
-      {petals.map((petal) => (
+      {particles.map((p) => (
         <motion.div
-          key={petal.id}
+          key={p.id}
           initial={{ y: "-10vh", opacity: 0, rotate: 0 }}
           animate={{
             y: "110vh",
-            opacity: [0, 0.45, 0.6, 0.4, 0],
-            rotate: [0, 90, 180, 270, 360],
-            x: [0, 15, -15, 20, 0],
+            opacity: p.type === "sparkle" ? [0, 0.9, 0.4, 0.95, 0] : [0, 0.7, 0.85, 0.6, 0],
+            rotate: [0, p.rotate / 2, p.rotate],
+            x: [0, 18, -14, 22, 0],
           }}
           transition={{
-            duration: petal.duration,
-            delay: petal.delay,
+            duration: p.duration,
+            delay: p.delay,
             repeat: Infinity,
             ease: "easeInOut",
           }}
           style={{
             position: "absolute",
-            left: petal.left,
-            width: petal.size,
-            height: petal.size,
+            left: p.left,
+            width: p.size,
+            height: p.size,
           }}
         >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            className="w-full h-full text-gold/30"
-          >
-            <path
-              d="M12 2C12 2 14 8 20 10C14 12 12 18 12 18C12 18 10 12 4 10C10 8 12 2 12 2Z"
-              fill="currentColor"
-            />
-          </svg>
+          {p.type === "sparkle" ? (
+            <span className="text-gold text-xs drop-shadow-[0_0_6px_rgba(197,160,89,0.7)] select-none">
+              ✦
+            </span>
+          ) : (
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              className="w-full h-full text-gold drop-shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
+            >
+              <path
+                d="M12 2C12 2 15 8 21 10C15 12 12 18 12 18C12 18 9 12 3 10C9 8 12 2 12 2Z"
+                fill="currentColor"
+                fillOpacity="0.85"
+              />
+            </svg>
+          )}
         </motion.div>
       ))}
     </div>

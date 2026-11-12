@@ -20,7 +20,7 @@ function ProfileCard({ profile, role }: { profile: Profile; role: string }) {
       <CornerFlourish position="bottom-right" className="bottom-1.5 right-1.5 opacity-60" />
 
       {/* Arched Portrait Photo */}
-      <div className="relative aspect-[3/4] w-48 sm:w-56 arch-frame-sm overflow-hidden border-2 border-gold/40 mb-6 shadow-md p-1 bg-gradient-to-b from-gold/30 via-transparent to-gold/30">
+      <div className="relative aspect-[3/4] w-48 sm:w-56 arch-frame-sm overflow-hidden border-2 border-gold/40 mb-6 shadow-md p-1 bg-gradient-to-b from-gold/30 via-transparent to-gold/30 group">
         <div className="w-full h-full arch-frame-sm overflow-hidden relative">
           <Image
             src={profile.photo.src}
@@ -28,7 +28,7 @@ function ProfileCard({ profile, role }: { profile: Profile; role: string }) {
             width={profile.photo.width}
             height={profile.photo.height}
             loading="lazy"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
           {profile.photo.placeholder && (
             <div className="absolute bottom-2 inset-x-2 bg-surface/90 backdrop-blur-xs py-1 px-2 rounded text-[10px] text-secondary font-medium text-center">

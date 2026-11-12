@@ -3,6 +3,7 @@
 import { useCountdown } from "@/hooks/use-countdown";
 import { weddingConfig } from "@/config/wedding.config";
 import { Clock } from "lucide-react";
+import { motion } from "motion/react";
 import { Reveal } from "@/components/reveal";
 import { BotanicalDivider } from "@/components/botanical-ornaments";
 
@@ -58,17 +59,19 @@ export function CountdownSection() {
                 { val: countdown.minutes, label: "Menit" },
                 { val: countdown.seconds, label: "Detik" },
               ].map((unit, idx) => (
-                <div
+                <motion.div
                   key={idx}
-                  className="flex flex-col items-center justify-center p-3.5 sm:p-5 rounded-2xl bg-ivory border-2 border-gold/30 shadow-md hover:border-gold transition-colors"
+                  whileHover={{ y: -3, scale: 1.03 }}
+                  whileTap={{ scale: 0.96 }}
+                  className="flex flex-col items-center justify-center p-3.5 sm:p-5 rounded-2xl bg-ivory border-2 border-gold/30 shadow-md hover:border-gold hover:shadow-lg transition-all"
                 >
-                  <span className="editorial-title text-2xl sm:text-4xl font-normal text-forest">
+                  <span className={`editorial-title text-2xl sm:text-4xl font-normal ${unit.label === "Detik" ? "text-gold font-medium" : "text-forest"}`}>
                     {String(unit.val).padStart(2, "0")}
                   </span>
                   <span className="text-[10px] sm:text-xs uppercase tracking-wider text-secondary mt-1 font-medium">
                     {unit.label}
                   </span>
-                </div>
+                </motion.div>
               ))}
             </div>
           )}

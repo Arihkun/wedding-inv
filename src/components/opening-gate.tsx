@@ -114,10 +114,9 @@ export function OpeningGate({ onOpen }: OpeningGateProps) {
             animate={{ opacity: 1 }}
             exit={{
               opacity: 0,
-              y: -50,
-              scale: 1.02,
-              filter: "blur(6px)",
-              transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
+              y: "-100%",
+              scale: 0.98,
+              transition: { duration: 0.9, ease: [0.32, 0.72, 0, 1] },
             }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-forest-dark/95 backdrop-blur-md text-ivory overflow-y-auto px-4 py-8"
           >
@@ -125,7 +124,7 @@ export function OpeningGate({ onOpen }: OpeningGateProps) {
             <motion.div
               initial={{ opacity: 0, scale: 0.92, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -30 }}
+              exit={{ opacity: 0, scale: 0.92, y: -40 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               className="relative max-w-md w-full my-auto mx-auto bg-forest border-2 border-gold/40 rounded-3xl p-6 sm:p-10 text-center shadow-[0_20px_50px_rgba(0,0,0,0.6)] overflow-hidden"
             >
@@ -145,8 +144,21 @@ export function OpeningGate({ onOpen }: OpeningGateProps) {
               <motion.button
                 type="button"
                 onClick={handleOpen}
-                whileHover={{ scale: 1.08, rotate: 3 }}
-                whileTap={{ scale: 0.95 }}
+                animate={{
+                  scale: [1, 1.05, 1],
+                  boxShadow: [
+                    "0 6px 16px rgba(0, 0, 0, 0.35)",
+                    "0 10px 24px rgba(197, 160, 89, 0.45)",
+                    "0 6px 16px rgba(0, 0, 0, 0.35)",
+                  ],
+                }}
+                transition={{
+                  duration: 2.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                whileHover={{ scale: 1.1, rotate: 3 }}
+                whileTap={{ scale: 0.92 }}
                 className="relative mx-auto -mt-2 mb-6 w-16 h-16 rounded-full wax-seal flex items-center justify-center border-2 border-gold/50 cursor-pointer shadow-lg group focus-visible:outline-2 focus-visible:outline-gold"
                 title="Buka Segel Undangan"
                 aria-label="Buka Segel Undangan"
@@ -238,11 +250,24 @@ export function OpeningGate({ onOpen }: OpeningGateProps) {
                 ref={buttonRef}
                 type="button"
                 onClick={handleOpen}
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
+                animate={{
+                  scale: [1, 1.02, 1],
+                  boxShadow: [
+                    "0 10px 25px -5px rgba(0, 0, 0, 0.3)",
+                    "0 12px 30px -4px rgba(197, 160, 89, 0.4)",
+                    "0 10px 25px -5px rgba(0, 0, 0, 0.3)",
+                  ],
+                }}
+                transition={{
+                  duration: 2.2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.97 }}
                 className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 min-h-[48px] rounded-xl bg-gradient-to-r from-gold via-gold-muted to-gold text-forest font-semibold text-base tracking-wide shadow-lg hover:shadow-gold/20 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-white cursor-pointer"
               >
-                <MailOpen className="w-5 h-5" aria-hidden="true" />
+                <MailOpen className="w-5 h-5 animate-pulse" aria-hidden="true" />
                 <span>Buka Undangan</span>
               </motion.button>
 

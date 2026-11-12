@@ -5,8 +5,8 @@ compatibility_date = "2026-11-03"
 [[d1_databases]]
 binding = "DB"
 database_name = "wedding"
-database_id = "00000000-0000-0000-0000-000000000000"
+database_id = "40e1270a-e41d-437a-be7c-5842e3e0887d"
 migrations_dir = "migrations"
 
 [vars]
-APP_ORIGIN = "http://localhost:8788"
+APP_ORIGIN = "https://kinar-oki-preview.pages.dev"

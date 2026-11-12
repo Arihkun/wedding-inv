@@ -55,12 +55,28 @@ export function CardSpotlight({
     setRotate({ x: 0, y: 0 });
   };
 
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setIsHovered(true);
+    if (!cardRef.current || shouldReduceMotion) return;
+    const touch = e.touches[0];
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+    setMousePos({ x, y });
+  };
+
+  const handleTouchEnd = () => {
+    setTimeout(() => setIsHovered(false), 800);
+  };
+
   return (
     <motion.div
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       animate={{
         rotateX: isHovered && enableTilt ? rotate.x : 0,
         rotateY: isHovered && enableTilt ? rotate.y : 0,
